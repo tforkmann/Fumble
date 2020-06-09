@@ -17,7 +17,7 @@ let overview =
             ]
         ]
         Bulma.subtitle.h2 [
-            Html.text "Server - HelperFunctions for reporting"
+            Html.text "Thin F# API for Sqlite for easy data access to ms sql server with functional seasoning on top"
         ]
         Html.hr []
         Bulma.content [
