@@ -1,0 +1,31 @@
+group Sqlite
+  storage: none
+  source https://api.nuget.org/v3/index.json
+  nuget TaskBuilder.fs
+  nuget Microsoft.Data.SqlClient
+  nuget Microsoft.Data.Sqlite
+group Test
+  storage: none
+  source https://api.nuget.org/v3/index.json
+  nuget FSharp.Core
+  nuget Expecto
+  nuget ThrowawayDb
+
+group Docs
+    source https://api.nuget.org/v3/index.json
+    framework: netstandard2.0
+    nuget FSharp.Core
+    nuget Fable.Core
+    nuget Fable.Elmish.React
+    nuget Fable.React
+    nuget Feliz.Router
+    nuget Zanaptak.TypedCssClasses
+    nuget Fable.SimpleHttp
+    nuget Feliz.ElmishComponents
+    nuget Feliz.UseDeferred
+    nuget Feliz.Popover
+    nuget Feliz
+    nuget Feliz.Markdown
+    nuget Fable.Elmish.Debugger
+    nuget Fable.Elmish.HMR
+    nuget Feliz.Bulma

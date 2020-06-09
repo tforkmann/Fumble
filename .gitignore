@@ -1,0 +1,13 @@
+packages/
+paket-files/
+build
+bin
+logs/*
+obj/
+test/obj/
+.vs/*
+.ionide/
+.fake/*
+tests/*
+reports/*
+node_modules

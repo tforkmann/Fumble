@@ -1,0 +1,39 @@
+html,body {
+  font-family: 'Open Sans', serif;
+}
+.hero.is-primary {
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ), no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.hero .nav, .hero.is-success .nav {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.hero .subtitle {
+  padding: 3rem 0;
+  line-height: 1.5;
+}
+
+.maploadercontainer,
+.mapcontainer {
+    height: calc(100vh - 18rem);
+    width: 100%;
+}
+
+.smallmaploadercontainer,
+.smallmapcontainer {
+    height: 200px;
+    width: 100%;
+}
+
+.mediummaploadercontainer,
+.mediummapcontainer {
+    height: 400px;
+    width: 100%;
+}
