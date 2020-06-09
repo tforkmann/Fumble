@@ -2,6 +2,13 @@
 
 Functional wrapper around plain old (dusty?) `Sqlite` to simplify data access when talking to MS Sqlite databases.
 
+## Available Packages:
+
+| Library  | Version |
+| ------------- | ------------- |
+| Fumble  | [![nuget - Fumble](https://img.shields.io/nuget/v/Fumble.svg?colorB=green)](hhttps://www.nuget.org/packages/Fumble/) |
+
+
 ## Install
 ```bash
 # nuget client
