@@ -1,6 +1,6 @@
 # Fumble
 
-Functional wrapper around plain old (dusty?) `SqlClient` to simplify data access when talking to MS Sql Server databases.
+Functional wrapper around plain old (dusty?) `Sqlite` to simplify data access when talking to MS Sqlite databases.
 
 ## Install
 ```bash
@@ -22,9 +22,9 @@ type User = { Id: int; Username: string }
 
 let getUsers() : Result<User list, exn> =
     connectionString()
-    |> Sql.connect
-    |> Sql.query "SELECT * FROM dbo.[Users]"
-    |> Sql.execute (fun read ->
+    |> Sqlite.connect
+    |> Sqlite.query "SELECT * FROM dbo.[Users]"
+    |> Sqlite.execute (fun read ->
         {
             Id = read.int "user_id"
             Username = read.string "username"
@@ -42,9 +42,9 @@ type User = { Id: int; Username: string; LastModified : Option<DateTime> }
 
 let getUsers() : Result<User list, exn> =
     connectionString()
-    |> Sql.connect
-    |> Sql.query "SELECT * FROM dbo.[users]"
-    |> Sql.execute(fun read ->
+    |> Sqlite.connect
+    |> Sqlite.query "SELECT * FROM dbo.[users]"
+    |> Sqlite.execute(fun read ->
         {
             Id = read.int "user_id"
             Username = read.string "username"
@@ -63,9 +63,9 @@ type User = { Id: int; Username: string; Biography : string }
 
 let getUsers() : Result<User list, exn> =
     connectionString()
-    |> Sql.connect
-    |> Sql.query "select * from dbo.[users]"
-    |> Sql.execute (fun read ->
+    |> Sqlite.connect
+    |> Sqlite.query "select * from dbo.[users]"
+    |> Sqlite.execute (fun read ->
         {
             Id = read.int "user_id";
             Username = read.string "username"
@@ -82,10 +82,10 @@ let connectionString() = Env.getVar "app_db"
 // get product names by category
 let productsByCategory (category: string) : Result<string list, exn> =
     connectionString()
-    |> Sql.connect
-    |> Sql.query "SELECT name FROM dbo.[Products] where category = @category"
-    |> Sql.parameters [ "@category", Sql.string category ]
-    |> Sql.execute (fun read -> read.string "name")
+    |> Sqlite.connect
+    |> Sqlite.query "SELECT name FROM dbo.[Products] where category = @category"
+    |> Sqlite.parameters [ "@category", Sqlite.string category ]
+    |> Sqlite.execute (fun read -> read.string "name")
 ```
 ### Executing a stored procedure with parameters
 ```fs
@@ -99,10 +99,10 @@ let userExists (username: string) : Async<Result<bool, exn>> =
     async {
         return!
             connectionString()
-            |> Sql.connect
-            |> Sql.storedProcedure "user_exists"
-            |> Sql.parameters [ "@username", Sql.string username ]
-            |> Sql.execute (fun read -> read.bool 0)
+            |> Sqlite.connect
+            |> Sqlite.storedProcedure "user_exists"
+            |> Sqlite.parameters [ "@username", Sqlite.string username ]
+            |> Sqlite.execute (fun read -> read.bool 0)
             |> function
                 | Ok [ result ] -> Ok result
                 | Error error -> Error error
@@ -129,43 +129,15 @@ let executeMyStoredProcedure () : Async<int> =
     dataTable.Rows.Add("Fred", "Doe") |> ignore
 
     connectionString()
-    |> Sql.connect
-    |> Sql.storedProcedure "my_stored_proc"
-    |> Sql.parameters
-        [ "@foo", Sql.int 1
-          "@people", Sql.table (customSqlTypeName, dataTable) ]
-    |> Sql.executeNonQueryAsync
+    |> Sqlite.connect
+    |> Sqlite.storedProcedure "my_stored_proc"
+    |> Sqlite.parameters
+        [ "@foo", Sqlite.int 1
+          "@people", Sqlite.table (customSqlTypeName, dataTable) ]
+    |> Sqlite.executeNonQueryAsync
 ```
 
 ## Running Tests locally
 
-You only need a working local SQL server. The tests will create databases when required and dispose of them at the end of the each test
+You only need a working local Sqlite. The tests will create databases when required and dispose of them at the end of the each test
 
-## Builds
-
-| MacOS/Linux                                                                                                                          | Windows                                                                                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [![Travis Badge](https://travis-ci.org/Zaid-Ajaj/Fumble.svg?branch=master)](https://travis-ci.org/Zaid-Ajaj/Fumble)        | [![Build status](https://ci.appveyor.com/api/projects/status/github/Zaid-Ajaj/Fumble?svg=true)](https://ci.appveyor.com/project/Zaid-Ajaj/Fumble) |
-| [![Build History](https://buildstats.info/travisci/chart/Zaid-Ajaj/Fumble)](https://travis-ci.org/Zaid-Ajaj/Fumble/builds) | [![Build History](https://buildstats.info/appveyor/chart/Zaid-Ajaj/Fumble)](https://ci.appveyor.com/project/Zaid-Ajaj/Fumble)                     |
-
-
-## Nuget
-
-| Stable                                                                                                   | Prerelease                                                                                                                       |
-| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [![NuGet Badge](https://buildstats.info/nuget/Fumble)](https://www.nuget.org/packages/Fumble/) | [![NuGet Badge](https://buildstats.info/nuget/Fumble?includePreReleases=true)](https://www.nuget.org/packages/Fumble/) |
-
----
-
-### Building
-
-
-Make sure the following **requirements** are installed in your system:
-
-* [dotnet SDK](https://www.microsoft.com/net/download/core) 2.0 or higher
-* [Mono](http://www.mono-project.com/) if you're on Linux or macOS.
-
-```
-> build.cmd // on windows
-$ ./build.sh  // on unix
-```
