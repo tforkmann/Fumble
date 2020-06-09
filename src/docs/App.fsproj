@@ -9,29 +9,10 @@
     <Compile Include="Router.fs" />
     <Compile Include="Domain.fs" />
     <Compile Include="Shared.fs" />
-    <Compile Include="views\Chia\Chia.fs" />
-    <Compile Include="views\Chia\ChiaFileWriter.fs" />
-    <Compile Include="views\Chia\ChiaAiUtils.fs" />
-    <Compile Include="views\Chia\ChiaRedisCache.fs" />
-    <Compile Include="views\Chia\ChiaEventHub.fs" />
-    <Compile Include="views\Chia\ChiaCreateXml.fs" />
-    <Compile Include="views\Chia\ChiaCreateTable.fs" />
-    <Compile Include="views\Chia\ChiaCreateBlob.fs" />
-    <Compile Include="views\Chia\ChiaCreateJsonBlob.fs" />
-    <Compile Include="views\Chia\ChiaPostToQueue.fs" />
-    <Compile Include="views\Chia\ChiaGetTableEntry.fs" />
-    <Compile Include="views\Chia\ChiaLogger.fs" />
-    <Compile Include="views\Chia\ChiaInfrastructure.fs" />
-    <Compile Include="views\Chia\ChiaExcelUtils.fs" />
-    <Compile Include="views\Chia\ChiaTableStorage.fs" />
-    <Compile Include="views\ChiaClient\ChiaClient.fs" />
-    <Compile Include="views\ChiaClient\ChiaPageFlexer.fs" />
+    <Compile Include="views\Fumble\Fumble.fs" />
     <Compile Include="View.fs" />
     <Compile Include="State.fs" />
     <Compile Include="App.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Chia.Client\Chia.Client.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

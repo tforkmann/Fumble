@@ -29,3 +29,5 @@ group Docs
     nuget Fable.Elmish.Debugger
     nuget Fable.Elmish.HMR
     nuget Feliz.Bulma
+    nuget Chia.Client
+

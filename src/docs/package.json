@@ -20,7 +20,7 @@
         "bulma-quickview": "2.0.0",
         "bulma-switch": "2.0.0",
         "bulma-tooltip": "3.0.2",
-        "copy-webpack-plugin": "^6.0.2",
+        "copy-webpack-plugin": "^5.1.1",
         "core-js": "^3.3.2",
         "css-loader": "^3.5.3",
         "fable-compiler": "2.10.1",
