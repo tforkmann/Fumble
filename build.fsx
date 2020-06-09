@@ -38,13 +38,13 @@ open Fake.Core.TargetOperators
 
 let deployDir = Path.getFullName "./deploy"
 let release = ReleaseNotes.load "RELEASE_NOTES.md"
-let unitTestsPath = Path.getFullName "./src/Fumble.Tests/"
+let unitTestsPath = Path.getFullName "./tests/Fumble.Tests/"
 
 let buildDir  = "./build/"
 
 // Git configuration (used for publishing documentation in gh-pages branch)
 // The profile where the project is posted
-let gitHome = "https://github.com/DanpowerGruppe"
+let gitHome = "https://github.com/tforkmann"
 // The name of the project on GitHub
 let gitName = "Fumble"
 
@@ -56,21 +56,21 @@ let projectUrl = sprintf "%s/%s" gitHome gitName
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "Danpower Reporting Utils"
+let summary = "Thin F# API for Sqlite"
 
-let copyright = "Copyright \169 2019"
-let iconUrl = "https://raw.githubusercontent.com/fsprojects/Fumble/master/Fumble_logo.png"
-let licenceUrl = "https://github.com/fsprojects/Fumble/blob/master/LICENSE.md"
+let copyright = "Copyright \169 2020"
+let iconUrl = "https://raw.githubusercontent.com/tforkmann/Fumble/master/Fumble_logo.png"
+let licenceUrl = "https://github.com/tforkmann/Fumble/blob/master/LICENSE.md"
 let configuration = DotNet.BuildConfiguration.Release
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
-let description = """Thin F# API for Sqllite for easy data access to ms sql server with functional seasoning on top."""
+let description = """Thin F# API for Sqlite for easy data access to sqlite database with functional seasoning on top."""
 // List of author names (for NuGet package)
 let authors = [ "Tim Forkmann"]
 let owner = "Tim Forkmann"
 // Tags for your project (for NuGet package)
-let tags = "Thin F# API for Sqllite for easy data access to ms sql server with functional seasoning on top"
+let tags = "Thin F# API for Sqlite for easy data access to sqlite database with functional seasoning on top"
 
 // --------------------------------------------------------------------------------------
 // PlatformTools
