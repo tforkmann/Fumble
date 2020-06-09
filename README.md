@@ -1,6 +1,6 @@
 # Fumble
 
-Functional wrapper around plain old (dusty?) `Sqlite` to simplify data access when talking to MS Sqlite databases.
+Functional wrapper around plain old `Sqlite` to simplify data access when talking to SQLite databases.
 
 ## Available Packages:
 
