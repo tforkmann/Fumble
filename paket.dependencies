@@ -1,6 +1,7 @@
 group Sqlite
   storage: none
   source https://api.nuget.org/v3/index.json
+  nuget FSharp.Core
   nuget TaskBuilder.fs
   nuget Microsoft.Data.SqlClient
   nuget Microsoft.Data.Sqlite
