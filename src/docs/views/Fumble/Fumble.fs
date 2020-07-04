@@ -11,13 +11,13 @@ let overview =
                 prop.href "https://www.nuget.org/packages/Fumble/"
                 prop.children [
                     Html.img [
-                        prop.src "https://img.shields.io/nuget/v/Chia.svg?style=flat"
+                        prop.src "https://img.shields.io/nuget/v/Fumble.svg?style=flat"
                     ]
                 ]
             ]
         ]
         Bulma.subtitle.h2 [
-            Html.text "Thin F# API for Sqlite for easy data access to ms sql server with functional seasoning on top"
+            Html.text "Thin F# API for Sqlite for easy data access to sqlite database with functional seasoning on top"
         ]
         Html.hr []
         Bulma.content [
