@@ -8,6 +8,5 @@ test/obj/
 .vs/*
 .ionide/
 .fake/*
-tests/*
 reports/*
 node_modules
