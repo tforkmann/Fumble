@@ -23,11 +23,22 @@ let menuPart model dispatch =
     Bulma.menu
         [ Bulma.menuLabel "Fumble"
           Bulma.menuList [
-              item "Overview" Fumble ] ]
+              item "Overview" Fumble
+              item "QueryTable" QueryTable
+            //   item "HandleNullValues" HandleNullValues
+            //   item "ProvidingDefaultValues" ProvidingDefaultValues
+            //   item "ParameterizedQuery" ParameterizedQuery
+              item "InsertData" InsertData
+               ] ]
 
 let contentPart model dispatch =
     match model.CurrentPage with
     | Fumble -> Fumble.overview
+    | QueryTable -> QueryTable.overview
+    | HandleNullValues -> HandleNullValues.overview
+    | ProvidingDefaultValues -> ProvidingDefaultValues.overview
+    | ParameterizedQuery -> ParameterizedQuery.overview
+    | InsertData -> InsertData.overview
 
 let view (model: Model) (dispatch: Msg -> unit) =
 
