@@ -4,11 +4,15 @@
  * Author : Louis Barranqueiro - https://github.com/LouisBarranqueiro
  */
 
+ $primary-color: #2b2b7c;
+ $secondary-color : #2e88c9;
+ $tertiary-color : #46BDCF;
+
  .hljs {
     display: block;
     background: whitesmoke;
     padding: 0.5em;
-    color: #333333;
+    color: #2b2b7c;
     overflow-x: auto;
   }
 
@@ -22,20 +26,20 @@
   .hljs-strong,
   .hljs-emphasis,
   .hljs-quote {
-    color: #df5000;
+    color: $primary-color;
   }
 
   .hljs-keyword,
   .hljs-selector-tag,
   .hljs-type {
-    color: #d73a49;
+    color: $secondary-color;
   }
 
   .hljs-literal,
   .hljs-symbol,
   .hljs-bullet,
   .hljs-attribute {
-    color: #f14668;
+    color: $tertiary-color;
   }
 
   .hljs-section,
@@ -62,7 +66,7 @@
   }
 
   .hljs-deletion {
-    color: #bd2c00;
+    color: $tertiary-color;
     background-color: #ffecec;
   }
 
@@ -71,9 +75,9 @@
   }
 
   .hljs-number {
-    color: #f14668;
+    color: $tertiary-color;
   }
 
   .hljs-string {
-    color: #f14668;
+    color: $tertiary-color;
   }

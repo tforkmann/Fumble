@@ -16,11 +16,26 @@ let overview =
         ]
         Html.hr []
         Bulma.content [
-            Bulma.title.h4 "Connect to your database"
-            Html.p [ prop.dangerouslySetInnerHTML "Get the connection from the environment" ]
+            Bulma.title.h4 "Query data from to your database"
             code """
-            open Fumble
-            let connectionString() = Env.getVar "app_db"""
+            let data =
+                connectionString()
+                |> Sqlite.connect
+                |> Sqlite.query
+                "
+                SELECT * FROM Trades
+                ORDER BY timestamp desc
+                "
+                |> Sqlite.execute (fun read ->
+                    { Symbol = read.string "Symbol"
+                      Timestamp = read.dateTime "Timestamp"
+                      Price = read.double "Price"
+                      TradeSize = read.double "TradeSize" })
+                |> function
+                | Ok x -> x
+                | otherwise ->
+                    printfn "error %A" otherwise
+                    fail () """
         ]
     ]
 

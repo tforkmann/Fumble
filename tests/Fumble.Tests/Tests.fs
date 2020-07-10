@@ -85,7 +85,7 @@ let tests =
                     | otherwise ->
                         printfn "error %A" otherwise
                         fail () ]
-          testList "Create and insert"
+          testList "Read records"
               [ testDatabase "Query all records from the trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory

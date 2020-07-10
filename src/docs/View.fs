@@ -25,9 +25,9 @@ let menuPart model dispatch =
           Bulma.menuList [
               item "Overview" Fumble
               item "QueryTable" QueryTable
-              item "HandleNullValues" HandleNullValues
-              item "ProvidingDefaultValues" ProvidingDefaultValues
-              item "ParameterizedQuery" ParameterizedQuery
+            //   item "HandleNullValues" HandleNullValues
+            //   item "ProvidingDefaultValues" ProvidingDefaultValues
+            //   item "ParameterizedQuery" ParameterizedQuery
               item "InsertData" InsertData
                ] ]
 
