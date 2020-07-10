@@ -1,12 +1,12 @@
-module Fumble
+module InsertData
 
 open Feliz
 open Feliz.Bulma
-open Shared
+
 let overview =
     Html.div [
         Bulma.title.h1 [
-            Html.text "Fumble - Overview"
+            Html.text "Fumble - InsertData"
             Html.a [
                 prop.href "https://www.nuget.org/packages/Fumble/"
                 prop.children [
@@ -20,11 +20,9 @@ let overview =
             Html.text "Thin F# API for Sqlite for easy data access to sqlite database with functional seasoning on top"
         ]
         Html.hr []
-        Bulma.title.h2 "Installation"
-        Html.hr []
         Bulma.content [
-            code "dotnet add package Fumble"
-            code ".paket/paket.exe add Fumble --project path/to/project.fsproj"
+            Html.p "dotnet add package Fumble"
+            Html.p ".paket/paket.exe add Fumble --project path/to/project.fsproj"
         ]
     ]
 

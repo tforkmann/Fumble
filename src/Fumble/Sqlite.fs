@@ -140,10 +140,41 @@ module Sqlite =
             parameter.ParameterName <- normalizedName
             ignore (cmd.Parameters.Add(parameter))
 
+
     let private getConnection (props: SqlProps): SqliteConnection =
         match props.ExistingConnection with
         | Some connection -> connection
         | None -> new SqliteConnection(props.ConnectionString)
+    let insertData (insertDataRows: 'a list) (props: SqlProps)=
+        try
+            let connection = getConnection props
+            if not (connection.State.HasFlag ConnectionState.Open)
+                then connection.Open()
+            use transaction = connection.BeginTransaction()
+            let affectedRowsByInsert = ResizeArray<int>()
+            for insertData in insertDataRows do
+                let cmd =
+                    match props.SqlCommand with
+                    | Some cmd ->
+                    new SqliteCommand(cmd, connection, transaction)
+                    | None -> failwith "please add a SqlCommand"
+                insertData.GetType().GetProperties()
+                |> Array.iter (fun y ->
+                    // prepend param name with @ if it doesn't already
+                    let normalizedName =
+                        let parameterName = y.Name
+                        if parameterName.StartsWith("@") then parameterName else sprintf "@%s" parameterName
+
+                    let value = y.GetValue(insertData, null)
+                    printfn "Parameter %s %A" normalizedName value
+                    cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
+                )
+                let affectedRows = cmd.ExecuteNonQuery()
+                affectedRowsByInsert.Add affectedRows
+            transaction.Commit()
+            Ok(List.ofSeq affectedRowsByInsert)
+
+        with error -> Error error
 
     let private populateCmd (cmd: SqliteCommand) (props: SqlProps) =
         if props.IsFunction

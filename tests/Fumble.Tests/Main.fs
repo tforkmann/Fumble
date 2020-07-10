@@ -1,8 +1,10 @@
 module ExpectoTemplate
 open Expecto
 
+
+let config =
+        { defaultConfig with
+            runInParallel = false }
 [<EntryPoint>]
 let main argv =
-    // printfn "plants %A" TestSqlite.getCCPlant
-    // 0
-    runTestsInAssembly defaultConfig argv
+    runTestsInAssembly config argv

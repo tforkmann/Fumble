@@ -10,6 +10,11 @@
     <Compile Include="Domain.fs" />
     <Compile Include="Shared.fs" />
     <Compile Include="views\Fumble\Fumble.fs" />
+    <Compile Include="views\Fumble\QueryTable.fs" />
+    <Compile Include="views\Fumble\HandleNullValues.fs" />
+    <Compile Include="views\Fumble\ProvidingDefaultValues.fs" />
+    <Compile Include="views\Fumble\ParameterizedQuery.fs" />
+    <Compile Include="views\Fumble\InsertData.fs" />
     <Compile Include="View.fs" />
     <Compile Include="State.fs" />
     <Compile Include="App.fs" />
