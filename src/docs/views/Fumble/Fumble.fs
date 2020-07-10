@@ -26,6 +26,6 @@ let overview =
             code "dotnet add package Fumble"
             code ".paket/paket.exe add Fumble --project path/to/project.fsproj"
         ]
+        fixDocsView "Fumble"
     ]
 
-let installation = Shared.installationView "Fumble"

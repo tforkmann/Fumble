@@ -2,7 +2,7 @@ module ProvidingDefaultValues
 
 open Feliz
 open Feliz.Bulma
-
+open Shared
 let overview =
     Html.div [
         Bulma.title.h1 [
@@ -24,6 +24,6 @@ let overview =
             Html.p "dotnet add package Fumble"
             Html.p ".paket/paket.exe add Fumble --project path/to/project.fsproj"
         ]
-    ]
+        fixDocsView "ProvidingDefaultValues"
 
-let installation = Shared.installationView "Fumble"
+    ]

@@ -31,5 +31,7 @@ let overview =
                 printfn "error %A" otherwise
                 fail () """
         ]
+        fixDocsView "InsertData"
+
     ]
 

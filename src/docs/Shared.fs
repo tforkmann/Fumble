@@ -16,12 +16,10 @@ let code (c:string) =
     ]
 
 
-let installationView packageName =
+let fixDocsView fileName =
     Html.div [
-        Bulma.title.h1 (sprintf "%s - Installation" packageName)
-        Html.hr []
-        Bulma.content [
-            Bulma.title.h4 "Use Paket"
-            code (sprintf "paket add %s" packageName)
+        Html.a [
+            prop.href (sprintf "https://github.com/tforkmann/Fumble/blob/master/src/docs/views/Fumble/%s.fs" fileName)
+            prop.text ("Fix docs file " + fileName + " here")
         ]
     ]
