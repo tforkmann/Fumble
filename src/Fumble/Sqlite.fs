@@ -63,7 +63,12 @@ type Sqlite() =
         match value with
         | Some value -> Sqlite.dateTime (value)
         | None -> Sqlite.dbnull
+    static member dateTimeOffset(value: DateTimeOffset) = SqliteParameter(Value=value, DbType = DbType.DateTimeOffset)
 
+    static member dateTimeOffsetOrNone(value: DateTimeOffset option) =
+        match value with
+        | Some value -> Sqlite.dateTimeOffset(value)
+        | None -> Sqlite.dbnull
     static member uniqueidentifier(value: Guid) = SqliteParameter(Value = value, DbType = DbType.Guid)
 
     static member uniqueidentifierOrNone(value: Guid option) =
