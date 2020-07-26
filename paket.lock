@@ -4,7 +4,7 @@ GROUP Docs
 RESTRICTION: == netstandard2.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    Chia.Client (0.6.3)
+    Chia.Client (0.6.6)
       Elmish.Toastr (>= 2.1)
       Fable.Core (>= 3.1.5)
       Fable.Elmish.Debugger (>= 3.2)
@@ -34,17 +34,17 @@ NUGET
       Fable.Browser.Event (>= 1.0)
       Fable.Core (>= 3.0)
       FSharp.Core (>= 4.5.2)
-    Fable.Browser.XMLHttpRequest (1.1)
+    Fable.Browser.XMLHttpRequest (1.1.1)
       Fable.Browser.Blob (>= 1.1)
       Fable.Browser.Event (>= 1.0)
       Fable.Core (>= 3.0)
-      FSharp.Core (>= 4.6.2)
+      FSharp.Core (>= 4.7.1)
     Fable.Core (3.1.5)
       FSharp.Core (>= 4.7)
     Fable.Date (1.0)
       Fable.Core (>= 2.0.2)
       FSharp.Core (>= 4.5.2)
-    Fable.Elmish (3.0.6)
+    Fable.Elmish (3.1)
       Fable.Core (>= 3.0)
       FSharp.Core (>= 4.6.2)
     Fable.Elmish.Browser (3.0.4)
@@ -89,7 +89,7 @@ NUGET
       Fable.Browser.XMLHttpRequest (>= 1.1)
       Fable.Core (>= 3.0)
       FSharp.Core (>= 4.6.2)
-    Feliz (1.6)
+    Feliz (1.7)
       Fable.Core (>= 3.1.5)
       Fable.React (>= 6.2)
       FSharp.Core (>= 4.7.2)
@@ -105,11 +105,12 @@ NUGET
     Feliz.Popover (2.0)
       Feliz (>= 1.0)
       FSharp.Core (>= 4.7)
-    Feliz.Router (2.1)
+    Feliz.Router (3.0.1)
       Fable.Core (>= 3.1.5)
-      Fable.Elmish (>= 3.0.5)
-      Feliz (>= 1.0)
-      FSharp.Core (>= 4.7)
+      Fable.Elmish (>= 3.0.6)
+      Feliz (>= 1.6)
+      Feliz.UseListener (>= 0.3)
+      FSharp.Core (>= 4.7.2)
     Feliz.UseDeferred (1.1.1)
       Feliz (>= 1.5)
       FSharp.Core (>= 4.7)
@@ -118,6 +119,10 @@ NUGET
       Fable.Promise (>= 2.0)
       Feliz (>= 1.5)
       FSharp.Core (>= 4.7)
+    Feliz.UseListener (0.5)
+      Fable.Core (>= 3.1.5 < 4.0)
+      Feliz (>= 1.5 < 2.0)
+      FSharp.Core (>= 4.7 < 5.0)
     FSharp.Core (4.7.2)
     Fulma (2.9)
       Fable.Core (>= 3.0)
@@ -137,7 +142,7 @@ NUGET
     Thoth.Json (4.1)
       Fable.Core (>= 3.1.4)
       FSharp.Core (>= 4.7)
-    Zanaptak.TypedCssClasses (0.2)
+    Zanaptak.TypedCssClasses (0.3.1)
       FSharp.Core (>= 4.3.4)
 
 GROUP Sqlite
@@ -165,12 +170,12 @@ NUGET
       System.Text.Encoding.CodePages (>= 4.7) - restriction: || (&& (< net46) (>= netstandard2.0)) (>= netcoreapp2.1)
     Microsoft.Data.SqlClient.SNI (2.0) - restriction: >= net46
     Microsoft.Data.SqlClient.SNI.runtime (2.0) - restriction: || (&& (< net46) (>= netstandard2.0)) (>= netcoreapp2.1)
-    Microsoft.Data.Sqlite (3.1.5)
-      Microsoft.Data.Sqlite.Core (>= 3.1.5) - restriction: >= netstandard2.0
+    Microsoft.Data.Sqlite (3.1.6)
+      Microsoft.Data.Sqlite.Core (>= 3.1.6) - restriction: >= netstandard2.0
       SQLitePCLRaw.bundle_e_sqlite3 (>= 2.0.2) - restriction: >= netstandard2.0
-    Microsoft.Data.Sqlite.Core (3.1.5) - restriction: >= netstandard2.0
+    Microsoft.Data.Sqlite.Core (3.1.6) - restriction: >= netstandard2.0
       SQLitePCLRaw.core (>= 2.0.2) - restriction: >= netstandard2.0
-    Microsoft.Identity.Client (4.15) - restriction: || (>= net46) (>= netstandard2.0)
+    Microsoft.Identity.Client (4.16.1) - restriction: || (>= net46) (>= netstandard2.0)
       Microsoft.CSharp (>= 4.5) - restriction: || (&& (< monoandroid9.0) (< net45) (>= netstandard1.3) (< xamarinmac)) (>= netcoreapp2.1) (>= uap10.0) (>= xamarinios)
       NETStandard.Library (>= 1.6.1) - restriction: && (< monoandroid9.0) (< net45) (< netcoreapp2.1) (>= netstandard1.3) (< uap10.0) (< xamarinios) (< xamarinmac)
       System.ComponentModel.TypeConverter (>= 4.3) - restriction: || (&& (< monoandroid9.0) (< net45) (>= netstandard1.3) (< uap10.0) (< xamarinmac)) (>= netcoreapp2.1) (>= xamarinios)
