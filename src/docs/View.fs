@@ -53,6 +53,6 @@ let view (model: Model) (dispatch: Msg -> unit) =
                                 prop.children (menuPart model dispatch) ]
                             Bulma.tile (contentPart model dispatch) ] ] ] ]
 
-    Router.router
-        [ Router.onUrlChanged (parseUrl >> UrlChanged >> dispatch)
-          Router.application render ]
+    React.router
+        [ router.onUrlChanged (parseUrl >> UrlChanged >> dispatch)
+          router.children render ]
