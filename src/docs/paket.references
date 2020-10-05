@@ -1,17 +1,10 @@
 group Docs
-    FSharp.Core
-    Fable.Core
-    Fable.Elmish.React
-    Fable.React
-    Feliz.Router
-    Zanaptak.TypedCssClasses
-    Fable.SimpleHttp
-    Feliz.ElmishComponents
-    Feliz.UseDeferred
-    Feliz.Popover
-    Feliz
-    Feliz.Markdown
-    Fable.Elmish.Debugger
-    Fable.Elmish.HMR
-    Feliz.Bulma
-    Chia.Client
+Feliz.Router
+Zanaptak.TypedCssClasses
+Fable.SimpleHttp
+Feliz.ElmishComponents
+Feliz.UseDeferred
+Feliz.Popover
+Feliz.Markdown
+Feliz.Bulma
+Chia.Client
