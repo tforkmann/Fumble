@@ -1,6 +1,8 @@
 group Sqlite
   storage: none
+  framework: net5.0
   source https://api.nuget.org/v3/index.json
+  nuget FSharp.Core
   nuget TaskBuilder.fs
   nuget Microsoft.Data.SqlClient
   nuget Microsoft.Data.Sqlite
@@ -12,7 +14,7 @@ group Test
 
 group Docs
     source https://api.nuget.org/v3/index.json
-    framework: netstandard2.0
+    framework: net5.0
     nuget Feliz.Router
     nuget Zanaptak.TypedCssClasses
     nuget Fable.SimpleHttp
