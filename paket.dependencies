@@ -1,6 +1,8 @@
 group Sqlite
   storage: none
+  framework: net5.0
   source https://api.nuget.org/v3/index.json
+  nuget FSharp.Core
   nuget TaskBuilder.fs
   nuget Microsoft.Data.SqlClient
   nuget Microsoft.Data.Sqlite
