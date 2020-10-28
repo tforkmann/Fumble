@@ -127,7 +127,12 @@ let tests =
                         printfn "error %A" otherwise
                         fail () ] ]
 
-
+let config =
+        { defaultConfig with
+            runInParallel = false }
+[<EntryPoint>]
+let main argv =
+    runTestsInAssembly config argv
 //   testDatabase "Iterating over the rows works"
 //   <| fun connectionString ->
 //       let rows = ResizeArray<int * string>()

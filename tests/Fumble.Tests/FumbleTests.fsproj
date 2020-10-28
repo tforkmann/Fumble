@@ -6,7 +6,6 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Tests.fs" />
-        <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="../../src/Fumble/Fumble.fsproj" />   
