@@ -51,6 +51,12 @@ let trades =
         Timestamp = new DateTime(2017, 07, 28, 10, 43, 31)
         Price = 2750.01
         TradeSize = 0.44120000 } ]
+let tradesSingle =
+      { Symbol = "BTC/USD"
+        Timestamp = new DateTime(2020, 07, 28, 10, 43, 31)
+        Price = 2750.01
+        TradeSize = 0.44120000 }
+let props = tradesSingle.GetType().GetProperties()
 
 [<Tests>]
 let tests =
@@ -91,7 +97,7 @@ let tests =
                     |> Sqlite.connect
                     |> Sqlite.command "insert into Trades(symbol, timestamp, price, tradesize)
                         values (@Symbol, @Timestamp, @Price, @TradeSize)"
-                    |> Sqlite.insertRow trades.[0]
+                    |> Sqlite.insertData [tradesSingle]
                     |> function
                     | Ok x ->
                         printfn "rows affected %A" (x |> List.sum)
