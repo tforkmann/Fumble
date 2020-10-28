@@ -84,6 +84,20 @@ let tests =
                         pass ()
                     | otherwise ->
                         printfn "error %A" otherwise
+                        fail ()
+                testDatabase "Add single record into trade table"
+                <| fun connectionStringMemory ->
+                    connectionStringMemory
+                    |> Sqlite.connect
+                    |> Sqlite.command "insert into Trades(symbol, timestamp, price, tradesize)
+                        values (@Symbol, @Timestamp, @Price, @TradeSize)"
+                    |> Sqlite.insertRow trades.[0]
+                    |> function
+                    | Ok x ->
+                        printfn "rows affected %A" (x |> List.sum)
+                        pass ()
+                    | otherwise ->
+                        printfn "error %A" otherwise
                         fail () ]
           testList "Read records"
               [ testDatabase "Query all records from the trade table"
