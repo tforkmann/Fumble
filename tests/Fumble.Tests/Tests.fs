@@ -20,6 +20,11 @@ type TradeData =
       Timestamp: DateTime
       Price: float
       TradeSize: float }
+type Status =
+    { ClientStatus: string
+      TimeStamp: DateTimeOffset
+      ErrorCode: int option }
+
 
 // Sample Data
 let trades =
@@ -56,6 +61,11 @@ let tradesSingle =
         Timestamp = new DateTime(2020, 07, 28, 10, 43, 31)
         Price = 2750.01
         TradeSize = 0.44120000 }
+let status =
+      {   ClientStatus = "Running"
+          TimeStamp = DateTimeOffset.Now
+          ErrorCode = None }
+
 let props = tradesSingle.GetType().GetProperties()
 
 [<Tests>]
@@ -74,6 +84,35 @@ let tests =
                     |> Sqlite.executeCommand
                     |> function
                     | Ok x -> pass ()
+                    | otherwise ->
+                        printfn "error %A" otherwise
+                        fail ()
+                testDatabase "Create status table with optional status"
+                <| fun connectionStringMemory ->
+                    connectionStringMemory
+                    |> Sqlite.connect
+                    |> Sqlite.command "CREATE TABLE IF NOT EXISTS [Status] (
+                            [ClientStatus] varchar(20),
+                            [ErrorCode] int NULL,
+                            [TimeStamp] datetimeoffset
+                        )"
+                    |> Sqlite.executeCommand
+                    |> function
+                    | Ok x -> pass ()
+                    | otherwise ->
+                        printfn "error %A" otherwise
+                        fail ()
+                testDatabase "Add option record into status table"
+                <| fun connectionStringMemory ->
+                    connectionStringMemory
+                    |> Sqlite.connect
+                    |> Sqlite.command "INSERT INTO [Status](ClientStatus,TimeStamp,ErrorCode)
+                        VALUES (@ClientStatus, @TimeStamp, @ErrorCode)"
+                    |> Sqlite.insertData [status]
+                    |> function
+                    | Ok x ->
+                        printfn "rows affected %A" (x |> List.sum)
+                        pass ()
                     | otherwise ->
                         printfn "error %A" otherwise
                         fail ()

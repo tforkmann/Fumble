@@ -1,3 +1,5 @@
+#### 0.6.4 - 2020-10-29
+* Fix for being able to insert Null values
 #### 0.6.3 - 2020-10-28
 * Update packages
 #### 0.6.2 - 2020-10-16
