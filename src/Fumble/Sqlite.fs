@@ -174,14 +174,15 @@ module Sqlite =
                     printfn "Parameter %s %A" normalizedName value
                     match value with
                     | null ->
-                        cmd.Parameters.AddWithValue(normalizedName,box DBNull.Value) |> ignore
-                    | _ ->
-                        cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
+                        printfn "got null Name %s" normalizedName
+                        // let boxedValue = box DBNull.Value
+                        // printfn "boxedValue %A" boxedValue
+                        cmd.Parameters.AddWithValue(normalizedName,DBNull.Value) |> ignore
+                    | _ -> cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
                 )
                 let affectedRows = cmd.ExecuteNonQuery()
                 affectedRowsByInsert.Add affectedRows
             transaction.Commit()
-            printfn "blubb"
             Ok(List.ofSeq affectedRowsByInsert)
 
         with error -> Error error

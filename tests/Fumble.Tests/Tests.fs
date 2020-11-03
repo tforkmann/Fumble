@@ -24,7 +24,13 @@ type Status =
     { ClientStatus: string
       TimeStamp: DateTimeOffset
       ErrorCode: int option }
-
+type SqlRecord =
+    { TimeStamp: string
+      MeterId: string
+      RowKey: string
+      MeterType: string
+      Value: float32 option
+      Error: string option }
 
 // Sample Data
 let trades =
@@ -66,6 +72,22 @@ let status =
           TimeStamp = DateTimeOffset.Now
           ErrorCode = None }
 
+let sqlRecords =
+    [
+    { TimeStamp = DateTimeOffset.Now |> string
+      MeterId = "74-1-1"
+      RowKey = "9854577851"
+      MeterType = "Zählerwert"
+      Value = None
+      Error = Some "Error"  }
+    { TimeStamp = DateTimeOffset.Now |> string
+      MeterId = "74-1-2"
+      RowKey = "9854577851"
+      MeterType = "Messwert"
+      Value = Some (45. |> float32)
+      Error = None  }
+      ]
+
 let props = tradesSingle.GetType().GetProperties()
 
 [<Tests>]
@@ -102,6 +124,25 @@ let tests =
                     | otherwise ->
                         printfn "error %A" otherwise
                         fail ()
+                testDatabase "Create sqlrecords table"
+                <| fun connectionStringMemory ->
+                    connectionStringMemory
+                    |> Sqlite.connect
+                    |> Sqlite.command
+                        "CREATE TABLE IF NOT EXISTS [SqlRecords] (
+                            [TimeStamp] varchar(20),
+                            [MeterId] varchar(20),
+                            [RowKey] varchar(20),
+                            [MeterType] varchar(20),
+                            [Value] float NULL,
+                            [Error] varchar(20) NULL
+                        )"
+                    |> Sqlite.executeCommand
+                    |> function
+                    | Ok x -> pass ()
+                    | otherwise ->
+                        printfn "error %A" otherwise
+                        fail ()
                 testDatabase "Add option record into status table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
@@ -116,13 +157,28 @@ let tests =
                     | otherwise ->
                         printfn "error %A" otherwise
                         fail ()
-                testDatabase "Add records into trade table"
+                testDatabase "Add trades into trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
                     |> Sqlite.command "insert into Trades(symbol, timestamp, price, tradesize)
                         values (@Symbol, @Timestamp, @Price, @TradeSize)"
                     |> Sqlite.insertData trades
+                    |> function
+                    | Ok x ->
+                        printfn "rows affected %A" (x |> List.sum)
+                        pass ()
+                    | otherwise ->
+                        printfn "error %A" otherwise
+                        fail ()
+                testDatabase "Add sqlrecords into sqlrecords table"
+                <| fun connectionStringMemory ->
+                    connectionStringMemory
+                    |> Sqlite.connect
+                    |> Sqlite.command
+                        "INSERT INTO [SqlRecords](MeterId, TimeStamp, RowKey, MeterType, Value, Error)
+                         VALUES (@MeterId, @TimeStamp, @RowKey, @MeterType, @Value, @Error)"
+                    |> Sqlite.insertData sqlRecords
                     |> function
                     | Ok x ->
                         printfn "rows affected %A" (x |> List.sum)
@@ -164,7 +220,29 @@ let tests =
                         pass ()
                     | otherwise ->
                         printfn "error %A" otherwise
-                        fail () ] ]
+                        fail ()
+                testDatabase "Query all sqlrecords from the sql table"
+                    <| fun connectionStringMemory ->
+                        connectionStringMemory
+                        |> Sqlite.connect
+                        |> Sqlite.query """
+                        SELECT * FROM SqlRecords
+                        """
+                        |> Sqlite.execute (fun read ->
+                             { TimeStamp = read.string "TimeStamp"
+                               MeterId = read.string "MeterId"
+                               RowKey = read.string "RowKey"
+                               MeterType = read.string "MeterType"
+                               Value = read.floatOrNone "Value"
+                               Error = read.stringOrNone "Error" })
+                        |> function
+                        | Ok x ->
+                            printfn "queried data %A" x
+                            pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
+                         ]]
 
 let config =
         { defaultConfig with
