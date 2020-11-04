@@ -1,3 +1,5 @@
+#### 0.6.5 - 2020-04-11
+* Fix db insert
 #### 0.6.4 - 2020-10-29
 * Fix for being able to insert Null values
 #### 0.6.3 - 2020-10-28

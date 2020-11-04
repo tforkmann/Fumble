@@ -89,7 +89,13 @@ type Sqlite() =
 
 [<RequireQualifiedAccess>]
 module Sqlite =
-
+    let inline tryUnbox<'a> (x:obj) =
+        match x with
+        | :? 'a as result -> Some (result)
+        | :? option<'a> as result when result.IsSome -> result
+        | :? option<'a> as result when result.IsNone -> None
+        | _ ->
+            None
     type SqlProps =
         private { ConnectionString: string
                   SqlQuery: string option
@@ -144,7 +150,10 @@ module Sqlite =
 
             parameter.ParameterName <- normalizedName
             ignore (cmd.Parameters.Add(parameter))
-
+    let unboxAddValueHelper<'a> value (cmd:SqliteCommand) normalizedName =
+        match value |> tryUnbox<'a> with
+        | Some x -> cmd.Parameters.AddWithValue(normalizedName,x) |> ignore
+        | None -> cmd.Parameters.AddWithValue(normalizedName,DBNull.Value) |> ignore
 
     let private getConnection (props: SqlProps): SqliteConnection =
         match props.ExistingConnection with
@@ -171,17 +180,31 @@ module Sqlite =
                         if parameterName.StartsWith("@") then parameterName else sprintf "@%s" parameterName
 
                     let value = y.GetValue(insertData, null)
-                    printfn "Parameter %s %A" normalizedName value
+                    // printfn "Parameter %s %A" normalizedName value
+                    let tOption = typeof<option<obj>>.GetGenericTypeDefinition()
                     match value with
                     | null ->
-                        cmd.Parameters.AddWithValue(normalizedName,box DBNull.Value) |> ignore
+                        cmd.Parameters.AddWithValue(normalizedName,DBNull.Value) |> ignore
+                    | _ when value.GetType().IsGenericType && value.GetType().GetGenericTypeDefinition() = tOption ->
+                            match value.GetType().GenericTypeArguments with
+                            | [|t|] when t = typeof<int> ->
+                                printfn "option int"
+                                unboxAddValueHelper<int> value cmd normalizedName|> ignore
+                            | [|t|] when t = typeof<float> ->
+                                printfn "option float"
+                                unboxAddValueHelper<float> value cmd normalizedName|> ignore
+                            | [|t|] when t = typeof<string> ->
+                                printfn "option string"
+                                unboxAddValueHelper<string> value cmd normalizedName|> ignore
+                            | [|t|] when t = typeof<obj> -> printfn "option obj"; cmd.Parameters.AddWithValue(normalizedName,t) |> ignore
+                            | _                          -> printfn "option 't" ; cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
+
                     | _ ->
                         cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
                 )
                 let affectedRows = cmd.ExecuteNonQuery()
                 affectedRowsByInsert.Add affectedRows
             transaction.Commit()
-            printfn "blubb"
             Ok(List.ofSeq affectedRowsByInsert)
 
         with error -> Error error
