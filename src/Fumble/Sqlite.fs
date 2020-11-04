@@ -150,7 +150,10 @@ module Sqlite =
 
             parameter.ParameterName <- normalizedName
             ignore (cmd.Parameters.Add(parameter))
-
+    let unboxAddValueHelper<'a> value (cmd:SqliteCommand) normalizedName =
+        match value |> tryUnbox<'a> with
+        | Some x -> cmd.Parameters.AddWithValue(normalizedName,x) |> ignore
+        | None -> cmd.Parameters.AddWithValue(normalizedName,DBNull.Value) |> ignore
 
     let private getConnection (props: SqlProps): SqliteConnection =
         match props.ExistingConnection with
@@ -177,34 +180,22 @@ module Sqlite =
                         if parameterName.StartsWith("@") then parameterName else sprintf "@%s" parameterName
 
                     let value = y.GetValue(insertData, null)
-                    printfn "Parameter %s %A" normalizedName value
+                    // printfn "Parameter %s %A" normalizedName value
                     let tOption = typeof<option<obj>>.GetGenericTypeDefinition()
                     match value with
                     | null ->
-                        printfn "got null Name %s" normalizedName
-                        // let boxedValue = box DBNull.Value
-                        // printfn "boxedValue %A" boxedValue
                         cmd.Parameters.AddWithValue(normalizedName,DBNull.Value) |> ignore
                     | _ when value.GetType().IsGenericType && value.GetType().GetGenericTypeDefinition() = tOption ->
                             match value.GetType().GenericTypeArguments with
-                            | [|t|] when t = typeof<int> -> printfn "option int"; cmd.Parameters.AddWithValue(normalizedName,t) |> ignore
+                            | [|t|] when t = typeof<int> ->
+                                printfn "option int"
+                                unboxAddValueHelper<int> value cmd normalizedName|> ignore
                             | [|t|] when t = typeof<float> ->
-                                printfn "option float";
-                                let cast = value |> tryUnbox<float>
-                                match cast with
-                                | Some x -> cmd.Parameters.AddWithValue(normalizedName,x) |> ignore
-                                | None -> cmd.Parameters.AddWithValue(normalizedName,DBNull.Value) |> ignore
-
+                                printfn "option float"
+                                unboxAddValueHelper<float> value cmd normalizedName|> ignore
                             | [|t|] when t = typeof<string> ->
                                 printfn "option string"
-                                let cast = value |> tryUnbox<string>
-                                match cast with
-                                | Some x ->
-                                    printfn "got some string %s" x
-                                    cmd.Parameters.AddWithValue(normalizedName,x) |> ignore
-                                | None ->
-                                    printfn "got none %A" value
-                                    cmd.Parameters.AddWithValue(normalizedName,DBNull.Value) |> ignore
+                                unboxAddValueHelper<string> value cmd normalizedName|> ignore
                             | [|t|] when t = typeof<obj> -> printfn "option obj"; cmd.Parameters.AddWithValue(normalizedName,t) |> ignore
                             | _                          -> printfn "option 't" ; cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
 
