@@ -92,8 +92,10 @@ module Sqlite =
     let inline tryUnbox<'a> (x:obj) =
         match x with
         | :? 'a as result -> Some (result)
-        | _ -> None
-
+        | :? option<'a> as result when result.IsSome -> result
+        | :? option<'a> as result when result.IsNone -> None
+        | _ ->
+            None
     type SqlProps =
         private { ConnectionString: string
                   SqlQuery: string option
@@ -197,15 +199,15 @@ module Sqlite =
                                 printfn "option string"
                                 let cast = value |> tryUnbox<string>
                                 match cast with
-                                | Some x -> cmd.Parameters.AddWithValue(normalizedName,x) |> ignore
-                                | None -> cmd.Parameters.AddWithValue(normalizedName,DBNull.Value) |> ignore
+                                | Some x ->
+                                    printfn "got some string %s" x
+                                    cmd.Parameters.AddWithValue(normalizedName,x) |> ignore
+                                | None ->
+                                    printfn "got none %A" value
+                                    cmd.Parameters.AddWithValue(normalizedName,DBNull.Value) |> ignore
                             | [|t|] when t = typeof<obj> -> printfn "option obj"; cmd.Parameters.AddWithValue(normalizedName,t) |> ignore
                             | _                          -> printfn "option 't" ; cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
 
-                    // | :? Option<'T> as x ->
-                    //     printfn "%s is optional" normalizedName
-                    //     let optValue = if x.IsNone then DBNull.Value :> obj else x.Value :> obj
-                    //     cmd.Parameters.AddWithValue(normalizedName,optValue) |> ignore
                     | _ ->
                         cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
                 )
