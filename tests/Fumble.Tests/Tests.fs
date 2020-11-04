@@ -29,7 +29,7 @@ type SqlRecord =
       MeterId: string
       RowKey: string
       MeterType: string
-      Value: float32 option
+      Value: float option
       Error: string option }
 
 // Sample Data
@@ -84,7 +84,7 @@ let sqlRecords =
       MeterId = "74-1-2"
       RowKey = "9854577851"
       MeterType = "Messwert"
-      Value = Some (45. |> float32)
+      Value = Some 45.
       Error = None  }
       ]
 
@@ -233,7 +233,7 @@ let tests =
                                MeterId = read.string "MeterId"
                                RowKey = read.string "RowKey"
                                MeterType = read.string "MeterType"
-                               Value = read.floatOrNone "Value"
+                               Value = read.doubleOrNone "Value"
                                Error = read.stringOrNone "Error" })
                         |> function
                         | Ok x ->
