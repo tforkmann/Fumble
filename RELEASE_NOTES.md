@@ -1,4 +1,6 @@
-#### 0.6.5 - 2020-04-11
+#### 0.6.6 - 2020-11-05
+* Clean up messages
+#### 0.6.5 - 2020-11-04
 * Fix db insert
 #### 0.6.4 - 2020-10-29
 * Fix for being able to insert Null values

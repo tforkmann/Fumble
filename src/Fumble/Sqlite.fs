@@ -188,16 +188,13 @@ module Sqlite =
                     | _ when value.GetType().IsGenericType && value.GetType().GetGenericTypeDefinition() = tOption ->
                             match value.GetType().GenericTypeArguments with
                             | [|t|] when t = typeof<int> ->
-                                printfn "option int"
                                 unboxAddValueHelper<int> value cmd normalizedName|> ignore
                             | [|t|] when t = typeof<float> ->
-                                printfn "option float"
                                 unboxAddValueHelper<float> value cmd normalizedName|> ignore
                             | [|t|] when t = typeof<string> ->
-                                printfn "option string"
                                 unboxAddValueHelper<string> value cmd normalizedName|> ignore
-                            | [|t|] when t = typeof<obj> -> printfn "option obj"; cmd.Parameters.AddWithValue(normalizedName,t) |> ignore
-                            | _                          -> printfn "option 't" ; cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
+                            | [|t|] when t = typeof<obj> -> cmd.Parameters.AddWithValue(normalizedName,t) |> ignore
+                            | _   ->  cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
 
                     | _ ->
                         cmd.Parameters.AddWithValue(normalizedName,value) |> ignore
