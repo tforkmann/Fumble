@@ -5,7 +5,11 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="Reflection.fs" />
+        <Compile Include="GenericDeconstructor.fs" />
         <Compile Include="SqliteRowReader.fs" />
+        <Compile Include="SqliteHelper.fs" />
+        <Compile Include="InsertBuilder.fs" />
         <Compile Include="Sqlite.fs" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />

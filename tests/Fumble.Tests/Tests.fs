@@ -30,6 +30,7 @@ type SqlRecord =
       Value: float option
       Error: string option }
 
+
 // Sample Data
 let trades =
     [ { Symbol = "BTC/USD"
@@ -145,8 +146,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.command "INSERT INTO [Status](ClientStatus,TimeStamp,ErrorCode)
-                        VALUES (@ClientStatus, @TimeStamp, @ErrorCode)"
+                    |> Sqlite.commandInsert<Status> ("Status",[status])
                     |> Sqlite.insertData [status]
                     |> function
                     | Ok x ->
@@ -159,8 +159,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.command "insert into Trades(symbol, timestamp, price, tradesize)
-                        values (@Symbol, @Timestamp, @Price, @TradeSize)"
+                    |> Sqlite.commandInsert<TradeData> ("Trades",trades)
                     |> Sqlite.insertData trades
                     |> function
                     | Ok x ->
@@ -173,9 +172,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.command
-                        "INSERT INTO [SqlRecords](MeterId, TimeStamp, RowKey, MeterType, Value, Error)
-                         VALUES (@MeterId, @TimeStamp, @RowKey, @MeterType, @Value, @Error)"
+                    |> Sqlite.commandInsert<SqlRecord> ("SqlRecords",sqlRecords)
                     |> Sqlite.insertData sqlRecords
                     |> function
                     | Ok x ->
@@ -188,8 +185,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.command "insert into Trades(symbol, timestamp, price, tradesize)
-                        values (@Symbol, @Timestamp, @Price, @TradeSize)"
+                    |> Sqlite.commandInsert<TradeData> ("Trades",[tradesSingle])
                     |> Sqlite.insertData [tradesSingle]
                     |> function
                     | Ok x ->
@@ -261,8 +257,8 @@ let tests =
                            Error = read.stringOrNone "Error" })
                     |> function
                     | Ok x ->
-                        // printfn "queried data %A" x
-                        x
+                        printfn "queried data %A" x
+                        x |> List.distinct
                     | otherwise ->
                         printfn "error %A" otherwise
                         []

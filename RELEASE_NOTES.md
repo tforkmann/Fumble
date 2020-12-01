@@ -1,3 +1,5 @@
+#### 0.7.2 - 2020-12-01
+* Add commandInsert command
 #### 0.7.1 - 2020-11-13
 * Update packages
 #### 0.7.0 - 2020-11-13

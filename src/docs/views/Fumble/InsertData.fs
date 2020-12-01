@@ -16,12 +16,11 @@ let overview =
         ]
         Html.hr []
         Bulma.content [
-            Bulma.title.h4 "Insert trade data into database"
+            Bulma.title.h4 "Insert trade data into database with commandInsert"
             code """
             connectionString()
             |> Sqlite.connect
-            |> Sqlite.command "INSERT into Trades(symbol, timestamp, price, tradesize)
-                values (@Symbol, @Timestamp, @Price, @TradeSize)"
+            |> Sqlite.commandInsert<Trades>("Trades,trades)
             |> Sqlite.insertData trades
             |> function
             | Ok x ->

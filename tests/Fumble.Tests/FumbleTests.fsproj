@@ -5,6 +5,7 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="Deconstructor.fs" />
         <Compile Include="Tests.fs" />
     </ItemGroup>
     <ItemGroup>
@@ -12,3 +13,4 @@
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
+ 

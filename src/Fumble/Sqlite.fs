@@ -128,6 +128,9 @@ module Sqlite =
 
     let query (sqlQuery: string) props = { props with SqlQuery = Some sqlQuery }
     let command (sqlCommand: string) props = { props with SqlCommand = Some sqlCommand }
+    let commandInsert<'a> (tableName,insertValues:'a list) props =
+        let sqlCommand = InsertBuilder.createInsertString<'a> (tableName,insertValues)
+        { props with SqlCommand = Some sqlCommand }
 
     let queryStatements (sqlQuery: string list) props =
         { props with
@@ -467,3 +470,16 @@ module Sqlite =
                     if props.ExistingConnection.IsNone then connection.Dispose()
             with error -> return Error error
         }
+    open GenericDeconstructor
+    open System.Linq
+    let private specialStrings = [ "*" ]
+
+    let private inBrackets (s:string) =
+        s.Split('.')
+        |> Array.map (fun x -> if specialStrings.Contains(x) then x else sprintf "[%s]" x)
+        |> String.concat "."
+
+    let private safeTableName schema table =
+        match schema, table with
+        | None, table -> table |> inBrackets
+        | Some schema, table -> (schema |> inBrackets) + "." + (table |> inBrackets)
