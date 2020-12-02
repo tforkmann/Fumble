@@ -42,3 +42,4 @@ let test =
 }
 
 printfn "%s" (test |> Deconstructor.insert |> fst)
+printfn "%s" (test |> Deconstructor.create |> fst)

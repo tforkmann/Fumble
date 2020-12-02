@@ -18,6 +18,10 @@ module Reflection =
         Reflection.FSharpType.GetRecordFields(t)
         |> Array.map (fun x -> x.Name)
         |> Array.toList
+    let getPropertyTypes (t:Type) =
+        Reflection.FSharpType.GetRecordFields(t)
+        |> Array.map (fun x -> x.PropertyType)
+        |> Array.toList
 
     let getValues r =
         Reflection.FSharpValue.GetRecordFields r

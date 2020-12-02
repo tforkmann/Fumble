@@ -34,3 +34,9 @@ module InsertBuilder =
                 values insertValues
         }
         |> Deconstructor.insert |> fst
+    let createCreateString<'a> (tableName,insertValues:'a list) =
+        insert {
+                table tableName
+                values insertValues
+        }
+        |> Deconstructor.create |> fst

@@ -6,7 +6,7 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Deconstructor.fs" />
-        <Compile Include="Tests.fs" />
+        <!-- <Compile Include="Tests.fs" /> -->
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="../../src/Fumble/Fumble.fsproj" />   
