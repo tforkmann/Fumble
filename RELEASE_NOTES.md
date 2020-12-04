@@ -1,3 +1,5 @@
+#### 0.7.3 - 2020-12-04
+* Add commandCreate command
 #### 0.7.2 - 2020-12-01
 * Add commandInsert command
 #### 0.7.1 - 2020-11-13
