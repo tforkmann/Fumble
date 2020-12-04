@@ -97,11 +97,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.command "Create Table Trades (
-                        Symbol varchar(20),
-                        Timestamp datetime,
-                        Price float,
-                        TradeSize float)"
+                    |> Sqlite.commandCreate<TradeData> ("Trades")
                     |> Sqlite.executeCommand
                     |> function
                     | Ok x -> pass ()
@@ -112,11 +108,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.command "CREATE TABLE IF NOT EXISTS [Status] (
-                            [ClientStatus] varchar(20),
-                            [ErrorCode] int NULL,
-                            [TimeStamp] datetimeoffset
-                        )"
+                    |> Sqlite.commandCreate<Status> ("Status")
                     |> Sqlite.executeCommand
                     |> function
                     | Ok x -> pass ()
@@ -127,15 +119,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.command
-                        "CREATE TABLE IF NOT EXISTS [SqlRecords] (
-                            [TimeStamp] varchar(20),
-                            [MeterId] varchar(20),
-                            [RowKey] varchar(20),
-                            [MeterType] varchar(20),
-                            [Value] float NULL,
-                            [Error] varchar(20) NULL
-                        )"
+                    |> Sqlite.commandCreate<SqlRecord> ("SqlRecords")
                     |> Sqlite.executeCommand
                     |> function
                     | Ok x -> pass ()
@@ -146,7 +130,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.commandInsert<Status> ("Status",[status])
+                    |> Sqlite.commandInsert<Status> ("Status")
                     |> Sqlite.insertData [status]
                     |> function
                     | Ok x ->
@@ -159,7 +143,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.commandInsert<TradeData> ("Trades",trades)
+                    |> Sqlite.commandInsert<TradeData> "Trades"
                     |> Sqlite.insertData trades
                     |> function
                     | Ok x ->
@@ -172,7 +156,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.commandInsert<SqlRecord> ("SqlRecords",sqlRecords)
+                    |> Sqlite.commandInsert<SqlRecord> "SqlRecords"
                     |> Sqlite.insertData sqlRecords
                     |> function
                     | Ok x ->
@@ -185,7 +169,7 @@ let tests =
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sqlite.connect
-                    |> Sqlite.commandInsert<TradeData> ("Trades",[tradesSingle])
+                    |> Sqlite.commandInsert<TradeData> ("Trades")
                     |> Sqlite.insertData [tradesSingle]
                     |> function
                     | Ok x ->

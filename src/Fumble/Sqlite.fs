@@ -128,8 +128,12 @@ module Sqlite =
 
     let query (sqlQuery: string) props = { props with SqlQuery = Some sqlQuery }
     let command (sqlCommand: string) props = { props with SqlCommand = Some sqlCommand }
-    let commandInsert<'a> (tableName,insertValues:'a list) props =
-        let sqlCommand = InsertBuilder.createInsertString<'a> (tableName,insertValues)
+    let commandInsert<'a> (tableName) props =
+        let sqlCommand = InsertBuilder.createInsertString<'a> (tableName)
+        { props with SqlCommand = Some sqlCommand }
+    let commandCreate<'a> (tableName) props =
+        let sqlCommand = InsertBuilder.createCreateString<'a> (tableName)
+        printfn "SqlCommand %s" sqlCommand
         { props with SqlCommand = Some sqlCommand }
 
     let queryStatements (sqlQuery: string list) props =

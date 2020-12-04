@@ -12,8 +12,8 @@ type PlantDb =
       PlcAddress: string
       SPSGroup: string
       DataBlock: string
-      Rack: string
-      Slot: string
+      Rack: int option
+      Slot: float option
       Port: string }
 
 let plant =[
@@ -28,17 +28,17 @@ let plant =[
       PlcAddress =""
       SPSGroup =""
       DataBlock =""
-      Rack =""
-      Slot =""
+      Rack = None
+      Slot = None
       Port ="" }
 
 ]
 open Fumble.InsertBuilder
 open Fumble.SqliteDeconstructor
-let test =
-    insert {
+let test  =
+    insert<PlantDb> {
         table "Plant"
-        values plant
 }
 
 printfn "%s" (test |> Deconstructor.insert |> fst)
+// printfn "%A" (test |> Deconstructor.create)
