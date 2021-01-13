@@ -16,7 +16,7 @@ type SqliteRowReader(reader: SqliteDataReader) =
             let columnName = reader.GetName(fieldIndex)
             let columnType = reader.GetDataTypeName(fieldIndex)
             columnDict.Add(columnName, fieldIndex)
-            columnTypes.Add(reader.GetName(fieldIndex), columnType)
+            columnTypes.Add(columnName, columnType)
             types.Add(columnType)
 
     let failToRead (column: string) (columnType: string) =
