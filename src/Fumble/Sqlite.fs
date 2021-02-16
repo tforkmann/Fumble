@@ -133,7 +133,6 @@ module Sqlite =
         { props with SqlCommand = Some sqlCommand }
     let commandCreate<'a> (tableName) props =
         let sqlCommand = InsertBuilder.createCreateString<'a> (tableName)
-        printfn "SqlCommand %s" sqlCommand
         { props with SqlCommand = Some sqlCommand }
 
     let queryStatements (sqlQuery: string list) props =
@@ -181,13 +180,11 @@ module Sqlite =
                     | None -> failwith "please add a SqlCommand"
                 insertData.GetType().GetProperties()
                 |> Array.iter (fun y ->
-                    // prepend param name with @ if it doesn't already
                     let normalizedName =
                         let parameterName = y.Name
                         if parameterName.StartsWith("@") then parameterName else sprintf "@%s" parameterName
 
                     let value = y.GetValue(insertData, null)
-                    // printfn "Parameter %s %A" normalizedName value
                     let tOption = typeof<option<obj>>.GetGenericTypeDefinition()
                     match value with
                     | null ->

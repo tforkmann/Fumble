@@ -40,7 +40,6 @@ module GenericDeconstructor =
                     | "Microsoft.FSharp.Core.FSharpOption`1[System.Double]" -> "float NULL"
                     | "Microsoft.FSharp.Core.FSharpOption`1[System.Int32]" -> "int NULL"
                     | x ->
-                        printfn "unmatched property %s" x
                         failwithf "unmatched property %s" x
 
                 if i = 0 then sprintf "[%s] %s" key property else sprintf "   [%s] %s" key property)
@@ -54,5 +53,4 @@ module GenericDeconstructor =
             typeof<'a> |> Reflection.getPropertyTypes
 
         let fields = typeof<'a> |> Reflection.getFields
-        printfn "properties %A" properties
         _create evalCreateQuery q fields properties []
