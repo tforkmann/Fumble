@@ -1,3 +1,5 @@
+#### 0.7.7 - 2021-12-11
+* Update packages and use new build style
 #### 0.7.6 - 2021-02-16
 * get rid of printouts
 #### 0.7.5 - 2021-01-13
