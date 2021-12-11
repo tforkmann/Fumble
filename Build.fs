@@ -195,7 +195,6 @@ Target.create "Pack" (fun _ ->
               }) projectPath
 
     pack "Fumble"
-    pack "Fumble.Shared"
 )
 
 let getBuildParam = Environment.environVar
