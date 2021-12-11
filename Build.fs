@@ -1,37 +1,17 @@
-#r "paket:
-nuget FSharp.Core
-nuget Fake.Core.ReleaseNotes
-nuget Fake.Core.Process
-nuget Fake.IO.FileSystem
-nuget Fake.BuildServer.TeamFoundation
-nuget Fake.Core.Target
-nuget Fake.DotNet.Cli
-nuget Fake.Core.Environment
-nuget Fake.Installer.Wix
-nuget Newtonsoft.Json
-nuget System.ServiceProcess.ServiceController
-nuget Fake.Core.Trace
-nuget Fake.IO.Zip
-nuget Fake.Tools.Git
-nuget Fake.DotNet.Testing.Expecto
-nuget Fake.DotNet.Paket
-nuget Fake.Core.UserInput
-//"
-
-#load ".fake/build.fsx/intellisense.fsx"
-#if !FAKE
-  #r "netstandard"
-#endif
 open System
 open System.IO
 open Fake.Core
 open Fake.DotNet
-open Fake.IO
 open Fake.Core.TargetOperators
+open Fake.IO
+open Farmer
+open Farmer.Builders
+open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open Fake.Tools
-open Fake.IO.FileSystemOperators
-open Fake.Core.TargetOperators
+open Helpers
+initializeContext()
+
 //-----------------------------------------------
 // Information about the project to be used at NuGet and in AssemblyInfo files
 // --------------------------------------------------------------------------------------
@@ -56,9 +36,9 @@ let projectUrl = sprintf "%s/%s" gitHome gitName
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "Thin F# API for Sqlite"
+let summary = "Thin F# API for Fumble"
 
-let copyright = "Copyright \169 2020"
+let copyright = "Copyright \169 2021"
 let iconUrl = "https://raw.githubusercontent.com/tforkmann/Fumble/master/Fumble_logo.png"
 let licenceUrl = "https://github.com/tforkmann/Fumble/blob/master/LICENSE.md"
 let configuration = DotNet.BuildConfiguration.Release
@@ -123,6 +103,15 @@ Target.create "Clean" (fun _ ->
 
     Shell.cleanDirs [buildDir; "temp"; "docs/output"; deployDir;]
 )
+
+Target.create
+    "UpdateTools"
+    (fun _ ->
+        run dotnet "tool update fantomas-tool" __SOURCE_DIRECTORY__
+        run dotnet "tool update fake-cli" __SOURCE_DIRECTORY__
+        run dotnet "tool update paket" __SOURCE_DIRECTORY__
+
+        )
 
 open System.Text.RegularExpressions
 module Util =
@@ -206,6 +195,7 @@ Target.create "Pack" (fun _ ->
               }) projectPath
 
     pack "Fumble"
+    pack "Fumble.Shared"
 )
 
 let getBuildParam = Environment.environVar
@@ -227,14 +217,6 @@ let pushPackage _ =
         runDotNet cmd buildDir)
 Target.create "Push" (fun _ -> pushPackage [] )
 
-// Build order
-"Clean"
-    ==> "Build"
-    ==> "UnitTests"
-    ==> "PrepareRelease"
-    ==> "Pack"
-    ==> "Push"
-
 let docsSrcPath = Path.getFullName "./src/docs"
 let docsDeployPath = "docs"
 
@@ -253,10 +235,37 @@ Target.create "PublishDocs" (fun _ ->
 
 Target.create "RunDocs" (fun _ -> runTool npmTool "webpack-dev-server" docsSrcPath)
 
-"InstallDocs"
-==> "RunDocs"
-
-"InstallDocs"
-==> "PublishDocs"
-
 Target.runOrDefault "Build"
+
+
+let dependencies = [
+
+    "Clean"
+        // ==> "UpdateTools"
+        ==> "UnitTests"
+
+    "Clean"
+        // ==> "UpdateTools"
+        ==> "Build"
+        ==> "UnitTests"
+        ==> "PrepareRelease"
+        ==> "Pack"
+        ==> "Push"
+
+    "InstallDocs"
+        ==> "RunDocs"
+
+    "InstallDocs"
+        ==> "PublishDocs"
+]
+
+[<EntryPoint>]
+let main args =
+    try
+        match args with
+        | [| target |] -> Target.runOrDefault target
+        | _ -> Target.runOrDefault "Run"
+        0
+    with e ->
+        printfn "%A" e
+        1

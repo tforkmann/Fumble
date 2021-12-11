@@ -10,3 +10,4 @@ test/obj/
 .fake/*
 reports/*
 node_modules
+tests/Fumble.Tests/*.db
