@@ -1,18 +1,24 @@
 {
-  "version": 1,
-  "isRoot": true,
-  "tools": {
-    "fake-cli": {
-      "version": "5.20.4",
-      "commands": [
-        "fake"
-      ]
-    },
-    "paket": {
-      "version": "6.2.1",
-      "commands": [
-        "paket"
-      ]
+    "version": 1,
+    "isRoot": true,
+    "tools": {
+        "fake-cli": {
+            "version": "5.20.4",
+            "commands": [
+                "fake"
+            ]
+        },
+        "paket": {
+            "version": "7.0.0-alpha018",
+            "commands": [
+                "paket"
+            ]
+        },
+        "fantomas-tool": {
+            "version": "4.6.4",
+            "commands": [
+                "fantomas"
+            ]
+        }
     }
-  }
 }
