@@ -4,7 +4,6 @@ storage: none
 
 nuget Fake.Core.Target
 nuget Fake.DotNet.Cli
-nuget Fake.IO.FileSystem
 nuget Fake.Core.ReleaseNotes
 nuget Fake.Tools.Git
 nuget Fake.Core.UserInput
@@ -16,7 +15,6 @@ group Sqlite
   framework: net6.0
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core
-  nuget TaskBuilder.fs
   nuget Microsoft.Data.SqlClient
   nuget Microsoft.Data.Sqlite
 
