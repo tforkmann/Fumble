@@ -1,10 +1,9 @@
 source https://api.nuget.org/v3/index.json
-framework: net5.0
+framework: net6.0
 storage: none
 
 nuget Fake.Core.Target
 nuget Fake.DotNet.Cli
-nuget Fake.IO.FileSystem
 nuget Fake.Core.ReleaseNotes
 nuget Fake.Tools.Git
 nuget Fake.Core.UserInput
@@ -13,10 +12,9 @@ nuget Farmer
 
 group Sqlite
   storage: none
-  framework: net5.0
+  framework: net6.0
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core
-  nuget TaskBuilder.fs
   nuget Microsoft.Data.SqlClient
   nuget Microsoft.Data.Sqlite
 
@@ -28,7 +26,7 @@ group Test
 
 group Docs
     source https://api.nuget.org/v3/index.json
-    framework: net5.0
+    framework: net6.0
     nuget Feliz.Router
     nuget Zanaptak.TypedCssClasses
     nuget Fable.SimpleHttp

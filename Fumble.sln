@@ -8,7 +8,7 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fumble", "src\Fumble\Fumble
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ACBEE43C-7A88-4FB1-9B06-DB064D22B29F}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fumble.Tests", "tests\Fumble.Tests\Fumble.Tests.fsproj", "{1CA2E092-2320-451D-A4F0-9ED7C7C528CA}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fumble.Tests", "tests\Fumble.Tests\FumbleTests.fsproj", "{1CA2E092-2320-451D-A4F0-9ED7C7C528CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7594D4D1-487B-4686-83B0-BC0955E5B677}"
 	ProjectSection(SolutionItems) = preProject
