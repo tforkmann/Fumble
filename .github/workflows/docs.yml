@@ -30,4 +30,3 @@ jobs:
         publish_dir: ./docs/_public
         publish_branch: gh-pages
         force_orphan: true
-        cname: saturnframework.org
