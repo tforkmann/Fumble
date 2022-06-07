@@ -33,10 +33,12 @@ module GenericDeconstructor =
                     | "System.String" -> "varchar(20)"
                     | "System.Int32" -> "int"
                     | "System.Boolean" -> "int"
+                    | "System.Single" -> "float32"
                     | "System.Double" -> "float"
                     | "System.DateTime" -> "datetime"
                     | "System.DateTimeOffset" -> "datetimeoffset"
                     | "Microsoft.FSharp.Core.FSharpOption`1[System.String]" -> "varchar(20) NULL"
+                    | "Microsoft.FSharp.Core.FSharpOption`1[System.Single]" -> "float32 NULL"
                     | "Microsoft.FSharp.Core.FSharpOption`1[System.Double]" -> "float NULL"
                     | "Microsoft.FSharp.Core.FSharpOption`1[System.Int32]" -> "int NULL"
                     | x ->

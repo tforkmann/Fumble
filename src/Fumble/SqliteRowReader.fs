@@ -211,16 +211,29 @@ type SqliteRowReader(reader: SqliteDataReader) =
                 else Some(reader.GetFieldValue<byte []>(columnIndex))
             | false, _ -> failToRead column "byte[]"
 
-        member __.float(columnIndex: int) = reader.GetFloat(columnIndex)
+        member __.float32(columnIndex: int) = reader.GetFloat(columnIndex)
 
         /// Gets the value of the specified column as a `System.Single` object.
-        member __.float(column: string): float32 =
+        member __.float32(column: string): float32 =
             match columnDict.TryGetValue(column) with
             | true, columnIndex -> reader.GetFloat(columnIndex)
-            | false, _ -> failToRead column "float"
+            | false, _ -> failToRead column "float32"
 
         /// Gets the value of the specified column as a `System.Single` object.
-        member __.floatOrNone(column: string): float32 option =
+        member __.float32OrNone(column: string): float32 option =
             match columnDict.TryGetValue(column) with
             | true, columnIndex -> if reader.IsDBNull(columnIndex) then None else Some(reader.GetFloat(columnIndex))
+            | false, _ -> failToRead column "float32"
+
+        member __.float(columnIndex: int) = reader.GetDouble(columnIndex)
+
+        /// Gets the value of the specified column as a `System.Float` object.
+        member __.float(column: string): float =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> reader.GetDouble(columnIndex)
+            | false, _ -> failToRead column "float"
+
+        member __.floatOrNone(column: string): float option =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> if reader.IsDBNull(columnIndex) then None else Some(reader.GetDouble(columnIndex))
             | false, _ -> failToRead column "float"

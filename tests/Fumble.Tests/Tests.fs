@@ -28,8 +28,10 @@ type SqlRecord =
       RowKey: string
       MeterType: string
       Value: float option
+      SingleValue: float32 option
       Error: string option }
 
+type Width = {Width : float}
 
 // Sample Data
 let trades =
@@ -70,6 +72,8 @@ let status =
       {   ClientStatus = "Running"
           TimeStamp = DateTimeOffset.Now
           ErrorCode = None }
+let width =
+      {   Width = 150 }
 
 let sqlRecords =
     [
@@ -78,12 +82,14 @@ let sqlRecords =
       RowKey = "9854577851"
       MeterType = "Zählerwert"
       Value = None
+      SingleValue = None
       Error = Some "Error"  }
     { TimeStamp = DateTimeOffset.Now |> string
       MeterId = "74-1-2"
       RowKey = "9854577851"
       MeterType = "Messwert"
       Value = Some 45.
+      SingleValue = Some 45.f
       Error = None  }
       ]
 
@@ -120,6 +126,17 @@ let tests =
                     connectionStringMemory
                     |> Sqlite.connect
                     |> Sqlite.commandCreate<SqlRecord> ("SqlRecords")
+                    |> Sqlite.executeCommand
+                    |> function
+                    | Ok x -> pass ()
+                    | otherwise ->
+                        printfn "error %A" otherwise
+                        fail ()
+                testDatabase "Create width table"
+                <| fun connectionStringMemory ->
+                    connectionStringMemory
+                    |> Sqlite.connect
+                    |> Sqlite.commandCreate<Width> ("Width")
                     |> Sqlite.executeCommand
                     |> function
                     | Ok x -> pass ()
@@ -178,7 +195,23 @@ let tests =
                     | otherwise ->
                         printfn "error %A" otherwise
                         fail ()
+
+                testDatabase "Add single record into width table"
+                <| fun connectionStringMemory ->
+                    connectionStringMemory
+                    |> Sqlite.connect
+                    |> Sqlite.commandInsert<Width> ("Width")
+                    |> Sqlite.insertData [width]
+                    |> function
+                    | Ok x ->
+                        printfn "rows affected %A" (x |> List.sum)
+                        pass ()
+                    | otherwise ->
+                        printfn "error %A" otherwise
+                        fail ()
                 ]
+
+
           testList "Read records"
               [
                 testDatabase "Query all records from the trade table"
@@ -201,7 +234,7 @@ let tests =
                     | otherwise ->
                         printfn "error %A" otherwise
                 //         fail ()
-                testDatabase "Query all sqlrecords from the sql table"
+                testDatabase "Query all sqlrecords from the sqlite table"
                     <| fun connectionStringMemory ->
                         connectionStringMemory
                         |> Sqlite.connect
@@ -213,8 +246,26 @@ let tests =
                                MeterId = read.string "MeterId"
                                RowKey = read.string "RowKey"
                                MeterType = read.string "MeterType"
-                               Value = read.doubleOrNone "Value"
+                               Value = read.floatOrNone "Value"
+                               SingleValue = read.float32OrNone "SingleValue"
                                Error = read.stringOrNone "Error" })
+                        |> function
+                        | Ok x ->
+                            // printfn "queried data %A" x
+                            pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
+
+                testDatabase "Query all width from the sqlite table"
+                    <| fun connectionStringMemory ->
+                        connectionStringMemory
+                        |> Sqlite.connect
+                        |> Sqlite.query """
+                        SELECT * FROM Width
+                        """
+                        |> Sqlite.execute (fun read ->
+                             { Width = read.double "Width"  })
                         |> function
                         | Ok x ->
                             // printfn "queried data %A" x
@@ -237,7 +288,8 @@ let tests =
                            MeterId = read.string "MeterId"
                            RowKey = read.string "RowKey"
                            MeterType = read.string "MeterType"
-                           Value = read.doubleOrNone "Value"
+                           Value = read.floatOrNone "Value"
+                           SingleValue = read.float32OrNone "Value"
                            Error = read.stringOrNone "Error" })
                     |> function
                     | Ok x ->

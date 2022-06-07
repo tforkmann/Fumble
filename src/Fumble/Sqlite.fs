@@ -195,6 +195,8 @@ module Sqlite =
                                 unboxAddValueHelper<int> value cmd normalizedName|> ignore
                             | [|t|] when t = typeof<float> ->
                                 unboxAddValueHelper<float> value cmd normalizedName|> ignore
+                            | [|t|] when t = typeof<float32> ->
+                                unboxAddValueHelper<float32> value cmd normalizedName|> ignore
                             | [|t|] when t = typeof<string> ->
                                 unboxAddValueHelper<string> value cmd normalizedName|> ignore
                             | [|t|] when t = typeof<obj> -> cmd.Parameters.AddWithValue(normalizedName,t) |> ignore
