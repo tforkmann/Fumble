@@ -102,9 +102,9 @@ let tests =
               [ testDatabase "Create trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.commandCreate<TradeData> ("Trades")
-                    |> Sqlite.executeCommand
+                    |> Sql.connect
+                    |> Sql.commandCreate<TradeData> ("Trades")
+                    |> Sql.executeCommand
                     |> function
                     | Ok x -> pass ()
                     | otherwise ->
@@ -113,9 +113,9 @@ let tests =
                 testDatabase "Create status table with optional status"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.commandCreate<Status> ("Status")
-                    |> Sqlite.executeCommand
+                    |> Sql.connect
+                    |> Sql.commandCreate<Status> ("Status")
+                    |> Sql.executeCommand
                     |> function
                     | Ok x -> pass ()
                     | otherwise ->
@@ -124,9 +124,9 @@ let tests =
                 testDatabase "Create sqlrecords table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.commandCreate<SqlRecord> ("SqlRecords")
-                    |> Sqlite.executeCommand
+                    |> Sql.connect
+                    |> Sql.commandCreate<SqlRecord> ("SqlRecords")
+                    |> Sql.executeCommand
                     |> function
                     | Ok x -> pass ()
                     | otherwise ->
@@ -135,9 +135,9 @@ let tests =
                 testDatabase "Create width table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.commandCreate<Width> ("Width")
-                    |> Sqlite.executeCommand
+                    |> Sql.connect
+                    |> Sql.commandCreate<Width> ("Width")
+                    |> Sql.executeCommand
                     |> function
                     | Ok x -> pass ()
                     | otherwise ->
@@ -146,9 +146,9 @@ let tests =
                 testDatabase "Add option record into status table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.commandInsert<Status> ("Status")
-                    |> Sqlite.insertData [status]
+                    |> Sql.connect
+                    |> Sql.commandInsert<Status> ("Status")
+                    |> Sql.insertData [status]
                     |> function
                     | Ok x ->
                         printfn "rows affected %A" (x |> List.sum)
@@ -159,9 +159,9 @@ let tests =
                 testDatabase "Add trades into trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.commandInsert<TradeData> "Trades"
-                    |> Sqlite.insertData trades
+                    |> Sql.connect
+                    |> Sql.commandInsert<TradeData> "Trades"
+                    |> Sql.insertData trades
                     |> function
                     | Ok x ->
                         printfn "rows affected %A" (x |> List.sum)
@@ -172,9 +172,9 @@ let tests =
                 testDatabase "Add sqlrecords into sqlrecords table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.commandInsert<SqlRecord> "SqlRecords"
-                    |> Sqlite.insertData sqlRecords
+                    |> Sql.connect
+                    |> Sql.commandInsert<SqlRecord> "SqlRecords"
+                    |> Sql.insertData sqlRecords
                     |> function
                     | Ok x ->
                         printfn "rows affected %A" (x |> List.sum)
@@ -185,9 +185,9 @@ let tests =
                 testDatabase "Add single record into trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.commandInsert<TradeData> ("Trades")
-                    |> Sqlite.insertData [tradesSingle]
+                    |> Sql.connect
+                    |> Sql.commandInsert<TradeData> ("Trades")
+                    |> Sql.insertData [tradesSingle]
                     |> function
                     | Ok x ->
                         printfn "rows affected %A" (x |> List.sum)
@@ -199,9 +199,9 @@ let tests =
                 testDatabase "Add single record into width table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.commandInsert<Width> ("Width")
-                    |> Sqlite.insertData [width]
+                    |> Sql.connect
+                    |> Sql.commandInsert<Width> ("Width")
+                    |> Sql.insertData [width]
                     |> function
                     | Ok x ->
                         printfn "rows affected %A" (x |> List.sum)
@@ -217,12 +217,12 @@ let tests =
                 testDatabase "Query all records from the trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.query """
+                    |> Sql.connect
+                    |> Sql.query """
                     SELECT * FROM Trades
                     ORDER BY timestamp desc
                     """
-                    |> Sqlite.execute (fun read ->
+                    |> Sql.execute (fun read ->
                         { Symbol = read.string "Symbol"
                           Timestamp = read.dateTime "Timestamp"
                           Price = read.double "Price"
@@ -237,11 +237,11 @@ let tests =
                 testDatabase "Query all sqlrecords from the sqlite table"
                     <| fun connectionStringMemory ->
                         connectionStringMemory
-                        |> Sqlite.connect
-                        |> Sqlite.query """
+                        |> Sql.connect
+                        |> Sql.query """
                         SELECT * FROM SqlRecords
                         """
-                        |> Sqlite.execute (fun read ->
+                        |> Sql.execute (fun read ->
                              { TimeStamp = read.string "TimeStamp"
                                MeterId = read.string "MeterId"
                                RowKey = read.string "RowKey"
@@ -260,11 +260,11 @@ let tests =
                 testDatabase "Query all width from the sqlite table"
                     <| fun connectionStringMemory ->
                         connectionStringMemory
-                        |> Sqlite.connect
-                        |> Sqlite.query """
+                        |> Sql.connect
+                        |> Sql.query """
                         SELECT * FROM Width
                         """
-                        |> Sqlite.execute (fun read ->
+                        |> Sql.execute (fun read ->
                              { Width = read.double "Width"  })
                         |> function
                         | Ok x ->
@@ -279,11 +279,11 @@ let tests =
                 let expected = sqlRecords
                 let actual =
                     connectionStringMemory
-                    |> Sqlite.connect
-                    |> Sqlite.query """
+                    |> Sql.connect
+                    |> Sql.query """
                     SELECT * FROM SqlRecords
                     """
-                    |> Sqlite.execute (fun read ->
+                    |> Sql.execute (fun read ->
                          { TimeStamp = read.string "TimeStamp"
                            MeterId = read.string "MeterId"
                            RowKey = read.string "RowKey"

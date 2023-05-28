@@ -10,7 +10,7 @@
         <Compile Include="SqliteRowReader.fs" />
         <Compile Include="SqliteHelper.fs" />
         <Compile Include="InsertBuilder.fs" />
-        <Compile Include="Sqlite.fs" />
+        <Compile Include="Sql.fs" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

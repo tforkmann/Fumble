@@ -5,90 +5,90 @@ open System.Data
 open Microsoft.Data.Sqlite
 open System.Threading
 
-type Sqlite() =
+type Sql() =
     static member dbnull = SqliteParameter(Value = DBNull.Value)
 
     static member int(value: int) = SqliteParameter(Value = value, DbType = DbType.Int32)
 
     static member intOrNone(value: int option) =
         match value with
-        | Some value -> Sqlite.int (value)
-        | None -> Sqlite.dbnull
+        | Some value -> Sql.int (value)
+        | None -> Sql.dbnull
 
     static member string(value: string) = SqliteParameter(Value = value, DbType = DbType.String)
 
     static member stringOrNone(value: string option) =
         match value with
-        | Some value -> Sqlite.string (value)
-        | None -> Sqlite.dbnull
+        | Some value -> Sql.string (value)
+        | None -> Sql.dbnull
 
     static member bool(value: bool) = SqliteParameter(Value = value, DbType = DbType.Boolean)
 
     static member boolOrNone(value: bool option) =
         match value with
-        | Some thing -> Sqlite.bool (thing)
-        | None -> Sqlite.dbnull
+        | Some thing -> Sql.bool (thing)
+        | None -> Sql.dbnull
 
     static member double(value: double) = SqliteParameter(Value = value, DbType = DbType.Double)
 
     static member doubleOrNone(value: double option) =
         match value with
-        | Some value -> Sqlite.double (value)
+        | Some value -> Sql.double (value)
         | None -> SqliteParameter(Value = DBNull.Value)
 
     static member decimal(value: decimal) = SqliteParameter(Value = value, DbType = DbType.Decimal)
 
     static member decimalOrNone(value: decimal option) =
         match value with
-        | Some value -> Sqlite.decimal (value)
-        | None -> Sqlite.dbnull
+        | Some value -> Sql.decimal (value)
+        | None -> Sql.dbnull
 
     static member int16(value: int16) = SqliteParameter(Value = value, DbType = DbType.Int16)
 
     static member int16OrNone(value: int16 option) =
         match value with
-        | Some value -> Sqlite.int16 value
-        | None -> Sqlite.dbnull
+        | Some value -> Sql.int16 value
+        | None -> Sql.dbnull
 
     static member int64(value: int64) = SqliteParameter(Value = value, DbType = DbType.Int64)
 
     static member int64OrNone(value: int64 option) =
         match value with
-        | Some value -> Sqlite.int64 value
-        | None -> Sqlite.dbnull
+        | Some value -> Sql.int64 value
+        | None -> Sql.dbnull
 
     static member dateTime(value: DateTime) = SqliteParameter(Value = value, DbType = DbType.DateTime)
 
     static member dateTimeOrNone(value: DateTime option) =
         match value with
-        | Some value -> Sqlite.dateTime (value)
-        | None -> Sqlite.dbnull
+        | Some value -> Sql.dateTime (value)
+        | None -> Sql.dbnull
     static member dateTimeOffset(value: DateTimeOffset) = SqliteParameter(Value=value, DbType = DbType.DateTimeOffset)
 
     static member dateTimeOffsetOrNone(value: DateTimeOffset option) =
         match value with
-        | Some value -> Sqlite.dateTimeOffset(value)
-        | None -> Sqlite.dbnull
+        | Some value -> Sql.dateTimeOffset(value)
+        | None -> Sql.dbnull
     static member uniqueidentifier(value: Guid) = SqliteParameter(Value = value, DbType = DbType.Guid)
 
     static member uniqueidentifierOrNone(value: Guid option) =
         match value with
-        | Some value -> Sqlite.uniqueidentifier value
-        | None -> Sqlite.dbnull
+        | Some value -> Sql.uniqueidentifier value
+        | None -> Sql.dbnull
 
     static member bytes(value: byte []) = SqliteParameter(Value = value)
 
     static member bytesOrNone(value: byte [] option) =
         match value with
-        | Some value -> Sqlite.bytes value
-        | None -> Sqlite.dbnull
+        | Some value -> Sql.bytes value
+        | None -> Sql.dbnull
 
     static member table(value: DataTable) = SqliteParameter(Value = value)
 
     static member parameter(genericParameter: SqliteParameter) = genericParameter
 
 [<RequireQualifiedAccess>]
-module Sqlite =
+module Sql =
     let inline tryUnbox<'a> (x:obj) =
         match x with
         | :? 'a as result -> Some (result)

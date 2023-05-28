@@ -39,8 +39,8 @@ let projectUrl = sprintf "%s/%s" gitHome gitName
 let summary = "Thin F# API for Fumble"
 
 let copyright = "Copyright \169 2021"
-let iconUrl = "https://raw.githubusercontent.com/tforkmann/Fumble/master/Fumble_logo.png"
-let licenceUrl = "https://github.com/tforkmann/Fumble/blob/master/LICENSE.md"
+let iconUrl = "https://raw.githubusercontent.com/tforkmann/Fumble/main/Fumble_logo.png"
+let licenceUrl = "https://github.com/tforkmann/Fumble/blob/main/LICENSE.md"
 let configuration = DotNet.BuildConfiguration.Release
 
 // Longer description of the project
@@ -149,13 +149,13 @@ Target.create "UnitTests" (fun _ ->
 )
 
 Target.create "PrepareRelease" (fun _ ->
-    Git.Branches.checkout "" false "master"
+    Git.Branches.checkout "" false "main"
     Git.CommandHelper.directRunGitCommand "" "fetch origin" |> ignore
     Git.CommandHelper.directRunGitCommand "" "fetch origin --tags" |> ignore
 
     Git.Staging.stageAll ""
     Git.Commit.exec "" (sprintf "Bumping version to %O" release.NugetVersion)
-    Git.Branches.pushBranch "" "origin" "master"
+    Git.Branches.pushBranch "" "origin" "main"
 
     let tagName = string release.NugetVersion
     Git.Branches.tag "" tagName
