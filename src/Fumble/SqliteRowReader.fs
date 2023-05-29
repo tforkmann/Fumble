@@ -4,7 +4,7 @@ open System
 open System.Collections.Generic
 open Microsoft.Data.Sqlite
 
-type SqliteRowReader(reader: SqliteDataReader) =
+type RowReader(reader: SqliteDataReader) =
     let columnDict = Dictionary<string, int>()
     let columnTypes = Dictionary<string, string>()
     let types = ResizeArray<string>()

@@ -296,7 +296,7 @@ module Sql =
             with error -> return Error error
         }
 
-    let execute (read: SqliteRowReader -> 't) (props: SqlProps): Result<'t list, exn> =
+    let execute (read: RowReader -> 't) (props: SqlProps): Result<'t list, exn> =
         try
             if props.SqlQuery.IsNone
             then failwith "No query provided to execute. Please use Sql.query"
@@ -311,7 +311,7 @@ module Sql =
                 do populateCmd command props
                 if props.NeedPrepare then command.Prepare()
                 use reader = command.ExecuteReader()
-                let rowReader = SqliteRowReader(reader)
+                let rowReader = RowReader(reader)
                 let result = ResizeArray<'t>()
                 while reader.Read() do
                     result.Add(read rowReader)
@@ -320,7 +320,7 @@ module Sql =
                 if props.ExistingConnection.IsNone then connection.Dispose()
         with error -> Error error
 
-    let iter (read: SqliteRowReader -> unit) (props: SqlProps): Result<unit, exn> =
+    let iter (read: RowReader -> unit) (props: SqlProps): Result<unit, exn> =
         try
             if props.SqlQuery.IsNone
             then failwith "No query provided to execute. Please use Sql.query"
@@ -335,7 +335,7 @@ module Sql =
                 do populateCmd command props
                 if props.NeedPrepare then command.Prepare()
                 use reader = command.ExecuteReader()
-                let rowReader = SqliteRowReader(reader)
+                let rowReader = RowReader(reader)
                 while reader.Read() do
                     read rowReader
                 Ok()
@@ -343,7 +343,7 @@ module Sql =
                 if props.ExistingConnection.IsNone then connection.Dispose()
         with error -> Error error
 
-    let iterAsync (read: SqliteRowReader -> unit) (props: SqlProps): Async<Result<unit, exn>> =
+    let iterAsync (read: RowReader -> unit) (props: SqlProps): Async<Result<unit, exn>> =
         async {
             try
                 let! token = Async.CancellationToken
@@ -365,7 +365,7 @@ module Sql =
                     do populateCmd command props
                     if props.NeedPrepare then command.Prepare()
                     use! reader = Async.AwaitTask(command.ExecuteReaderAsync(mergedToken))
-                    let rowReader = SqliteRowReader(reader)
+                    let rowReader = RowReader(reader)
                     while reader.Read() do
                         read rowReader
                     return Ok()
@@ -374,7 +374,7 @@ module Sql =
             with error -> return Error error
         }
 
-    let executeAsync (read: SqliteRowReader -> 't) (props: SqlProps): Async<Result<'t list, exn>> =
+    let executeAsync (read: RowReader -> 't) (props: SqlProps): Async<Result<'t list, exn>> =
         async {
             try
                 let! token = Async.CancellationToken
@@ -396,7 +396,7 @@ module Sql =
                     do populateCmd command props
                     if props.NeedPrepare then command.Prepare()
                     use! reader = Async.AwaitTask(command.ExecuteReaderAsync(mergedToken))
-                    let rowReader = SqliteRowReader(reader)
+                    let rowReader = RowReader(reader)
                     let result = ResizeArray<'t>()
                     while reader.Read() do
                         result.Add(read rowReader)
