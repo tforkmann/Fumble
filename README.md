@@ -29,9 +29,9 @@ type User = { Id: int; Username: string }
 
 let getUsers() : Result<User list, exn> =
     connectionString()
-    |> Sqlite.connect
-    |> Sqlite.query "SELECT * FROM dbo.[Users]"
-    |> Sqlite.execute (fun read ->
+    |> Sql.connect
+    |> Sql.query "SELECT * FROM dbo.[Users]"
+    |> Sql.execute (fun read ->
         {
             Id = read.int "user_id"
             Username = read.string "username"
@@ -49,9 +49,9 @@ type User = { Id: int; Username: string; LastModified : Option<DateTime> }
 
 let getUsers() : Result<User list, exn> =
     connectionString()
-    |> Sqlite.connect
-    |> Sqlite.query "SELECT * FROM dbo.[users]"
-    |> Sqlite.execute(fun read ->
+    |> Sql.connect
+    |> Sql.query "SELECT * FROM dbo.[users]"
+    |> Sql.execute(fun read ->
         {
             Id = read.int "user_id"
             Username = read.string "username"
@@ -70,9 +70,9 @@ type User = { Id: int; Username: string; Biography : string }
 
 let getUsers() : Result<User list, exn> =
     connectionString()
-    |> Sqlite.connect
-    |> Sqlite.query "select * from dbo.[users]"
-    |> Sqlite.execute (fun read ->
+    |> Sql.connect
+    |> Sql.query "select * from dbo.[users]"
+    |> Sql.execute (fun read ->
         {
             Id = read.int "user_id";
             Username = read.string "username"
@@ -89,10 +89,10 @@ let connectionString() = Env.getVar "app_db"
 // get product names by category
 let productsByCategory (category: string) : Result<string list, exn> =
     connectionString()
-    |> Sqlite.connect
-    |> Sqlite.query "SELECT name FROM dbo.[Products] where category = @category"
-    |> Sqlite.parameters [ "@category", Sqlite.string category ]
-    |> Sqlite.execute (fun read -> read.string "name")
+    |> Sql.connect
+    |> Sql.query "SELECT name FROM dbo.[Products] where category = @category"
+    |> Sql.parameters [ "@category", Sql.string category ]
+    |> Sql.execute (fun read -> read.string "name")
 ```
 ### Executing a stored procedure with parameters
 ```fs
@@ -106,10 +106,10 @@ let userExists (username: string) : Async<Result<bool, exn>> =
     async {
         return!
             connectionString()
-            |> Sqlite.connect
-            |> Sqlite.storedProcedure "user_exists"
-            |> Sqlite.parameters [ "@username", Sqlite.string username ]
-            |> Sqlite.execute (fun read -> read.bool 0)
+            |> Sql.connect
+            |> Sql.storedProcedure "user_exists"
+            |> Sql.parameters [ "@username", Sql.string username ]
+            |> Sql.execute (fun read -> read.bool 0)
             |> function
                 | Ok [ result ] -> Ok result
                 | Error error -> Error error
@@ -136,12 +136,12 @@ let executeMyStoredProcedure () : Async<int> =
     dataTable.Rows.Add("Fred", "Doe") |> ignore
 
     connectionString()
-    |> Sqlite.connect
-    |> Sqlite.storedProcedure "my_stored_proc"
-    |> Sqlite.parameters
-        [ "@foo", Sqlite.int 1
-          "@people", Sqlite.table (customSqlTypeName, dataTable) ]
-    |> Sqlite.executeNonQueryAsync
+    |> Sql.connect
+    |> Sql.storedProcedure "my_stored_proc"
+    |> Sql.parameters
+        [ "@foo", Sql.int 1
+          "@people", Sql.table (customSqlTypeName, dataTable) ]
+    |> Sql.executeNonQueryAsync
 ```
 
 ## Running Tests locally
