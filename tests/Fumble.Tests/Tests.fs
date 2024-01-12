@@ -8,8 +8,7 @@ let pass () = Expect.isTrue true "true is true :)"
 let fail () = Expect.isTrue false "true is false :("
 
 let testDatabase testName f =
-    testCase testName
-    <| fun _ -> f @"Data Source=trades.db"
+    testCase testName <| fun _ -> f @"Data Source=trades.db"
 
 let connectionStringMemory = sprintf @"Data Source=trades.db"
 
@@ -18,10 +17,12 @@ type TradeData =
       Timestamp: DateTime
       Price: float
       TradeSize: float }
+
 type Status =
     { ClientStatus: string
       TimeStamp: DateTimeOffset
       ErrorCode: int option }
+
 type SqlRecord =
     { TimeStamp: string
       MeterId: string
@@ -31,7 +32,7 @@ type SqlRecord =
       SingleValue: float32 option
       Error: string option }
 
-type Width = {Width : float}
+type Width = { Width: float }
 
 // Sample Data
 let trades =
@@ -63,42 +64,44 @@ let trades =
         Timestamp = new DateTime(2017, 07, 28, 10, 43, 31)
         Price = 2750.01
         TradeSize = 0.44120000 } ]
+
 let tradesSingle =
-      { Symbol = "BTC/USD"
-        Timestamp = new DateTime(2020, 07, 28, 10, 43, 31)
-        Price = 2750.01
-        TradeSize = 0.44120000 }
+    { Symbol = "BTC/USD"
+      Timestamp = new DateTime(2020, 07, 28, 10, 43, 31)
+      Price = 2750.01
+      TradeSize = 0.44120000 }
+
 let status =
-      {   ClientStatus = "Running"
-          TimeStamp = DateTimeOffset.Now
-          ErrorCode = None }
-let width =
-      {   Width = 150 }
+    { ClientStatus = "Running"
+      TimeStamp = DateTimeOffset.Now
+      ErrorCode = None }
+
+let width = { Width = 150 }
 
 let sqlRecords =
-    [
-    { TimeStamp = DateTimeOffset.Now |> string
-      MeterId = "74-1-1"
-      RowKey = "9854577851"
-      MeterType = "Zählerwert"
-      Value = None
-      SingleValue = None
-      Error = Some "Error"  }
-    { TimeStamp = DateTimeOffset.Now |> string
-      MeterId = "74-1-2"
-      RowKey = "9854577851"
-      MeterType = "Messwert"
-      Value = Some 45.
-      SingleValue = Some 45.f
-      Error = None  }
-      ]
+    [ { TimeStamp = "2024-01-01" |> string
+        MeterId = "74-1-1"
+        RowKey = "9854577851"
+        MeterType = "Zählerwert"
+        Value = None
+        SingleValue = None
+        Error = Some "Error" }
+      { TimeStamp = "2024-01-01" |> string
+        MeterId = "74-1-2"
+        RowKey = "9854577851"
+        MeterType = "Messwert"
+        Value = Some 45.
+        SingleValue = Some 45.f
+        Error = None } ]
 
 let props = tradesSingle.GetType().GetProperties()
 
 [<Tests>]
 let tests =
-    testList "Fumble"
-        [ testList "Create and insert"
+    testList
+        "Fumble"
+        [ testList
+              "Create and insert"
               [ testDatabase "Create trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
@@ -106,10 +109,10 @@ let tests =
                     |> Sql.commandCreate<TradeData> ("Trades")
                     |> Sql.executeCommand
                     |> function
-                    | Ok x -> pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        fail ()
+                        | Ok x -> pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
                 testDatabase "Create status table with optional status"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
@@ -117,10 +120,10 @@ let tests =
                     |> Sql.commandCreate<Status> ("Status")
                     |> Sql.executeCommand
                     |> function
-                    | Ok x -> pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        fail ()
+                        | Ok x -> pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
                 testDatabase "Create sqlrecords table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
@@ -128,10 +131,10 @@ let tests =
                     |> Sql.commandCreate<SqlRecord> ("SqlRecords")
                     |> Sql.executeCommand
                     |> function
-                    | Ok x -> pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        fail ()
+                        | Ok x -> pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
                 testDatabase "Create width table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
@@ -139,23 +142,23 @@ let tests =
                     |> Sql.commandCreate<Width> ("Width")
                     |> Sql.executeCommand
                     |> function
-                    | Ok x -> pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        fail ()
+                        | Ok x -> pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
                 testDatabase "Add option record into status table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sql.connect
                     |> Sql.commandInsert<Status> ("Status")
-                    |> Sql.insertData [status]
+                    |> Sql.insertData [ status ]
                     |> function
-                    | Ok x ->
-                        printfn "rows affected %A" (x |> List.sum)
-                        pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        fail ()
+                        | Ok x ->
+                            printfn "rows affected %A" (x |> List.sum)
+                            pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
                 testDatabase "Add trades into trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
@@ -163,12 +166,12 @@ let tests =
                     |> Sql.commandInsert<TradeData> "Trades"
                     |> Sql.insertData trades
                     |> function
-                    | Ok x ->
-                        printfn "rows affected %A" (x |> List.sum)
-                        pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        fail ()
+                        | Ok x ->
+                            printfn "rows affected %A" (x |> List.sum)
+                            pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
                 testDatabase "Add sqlrecords into sqlrecords table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
@@ -176,49 +179,49 @@ let tests =
                     |> Sql.commandInsert<SqlRecord> "SqlRecords"
                     |> Sql.insertData sqlRecords
                     |> function
-                    | Ok x ->
-                        printfn "rows affected %A" (x |> List.sum)
-                        pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        fail ()
+                        | Ok x ->
+                            printfn "rows affected %A" (x |> List.sum)
+                            pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
                 testDatabase "Add single record into trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sql.connect
                     |> Sql.commandInsert<TradeData> ("Trades")
-                    |> Sql.insertData [tradesSingle]
+                    |> Sql.insertData [ tradesSingle ]
                     |> function
-                    | Ok x ->
-                        printfn "rows affected %A" (x |> List.sum)
-                        pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        fail ()
+                        | Ok x ->
+                            printfn "rows affected %A" (x |> List.sum)
+                            pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail ()
 
                 testDatabase "Add single record into width table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sql.connect
                     |> Sql.commandInsert<Width> ("Width")
-                    |> Sql.insertData [width]
+                    |> Sql.insertData [ width ]
                     |> function
-                    | Ok x ->
-                        printfn "rows affected %A" (x |> List.sum)
-                        pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        fail ()
-                ]
+                        | Ok x ->
+                            printfn "rows affected %A" (x |> List.sum)
+                            pass ()
+                        | otherwise ->
+                            printfn "error %A" otherwise
+                            fail () ]
 
 
-          testList "Read records"
-              [
-                testDatabase "Query all records from the trade table"
+          testList
+              "Read records"
+              [ testDatabase "Query all records from the trade table"
                 <| fun connectionStringMemory ->
                     connectionStringMemory
                     |> Sql.connect
-                    |> Sql.query """
+                    |> Sql.query
+                        """
                     SELECT * FROM Trades
                     ORDER BY timestamp desc
                     """
@@ -228,28 +231,28 @@ let tests =
                           Price = read.double "Price"
                           TradeSize = read.double "TradeSize" })
                     |> function
-                    | Ok x ->
-                        printfn "queried data %A" x
-                        pass ()
-                    | otherwise ->
-                        printfn "error %A" otherwise
+                        | Ok x ->
+                            printfn "queried data %A" x
+                            pass ()
+                        | otherwise -> printfn "error %A" otherwise
                 //         fail ()
                 testDatabase "Query all sqlrecords from the sqlite table"
-                    <| fun connectionStringMemory ->
-                        connectionStringMemory
-                        |> Sql.connect
-                        |> Sql.query """
+                <| fun connectionStringMemory ->
+                    connectionStringMemory
+                    |> Sql.connect
+                    |> Sql.query
+                        """
                         SELECT * FROM SqlRecords
                         """
-                        |> Sql.execute (fun read ->
-                             { TimeStamp = read.string "TimeStamp"
-                               MeterId = read.string "MeterId"
-                               RowKey = read.string "RowKey"
-                               MeterType = read.string "MeterType"
-                               Value = read.floatOrNone "Value"
-                               SingleValue = read.float32OrNone "SingleValue"
-                               Error = read.stringOrNone "Error" })
-                        |> function
+                    |> Sql.execute (fun read ->
+                        { TimeStamp = read.string "TimeStamp"
+                          MeterId = read.string "MeterId"
+                          RowKey = read.string "RowKey"
+                          MeterType = read.string "MeterType"
+                          Value = read.floatOrNone "Value"
+                          SingleValue = read.float32OrNone "SingleValue"
+                          Error = read.stringOrNone "Error" })
+                    |> function
                         | Ok x ->
                             // printfn "queried data %A" x
                             pass ()
@@ -258,52 +261,55 @@ let tests =
                             fail ()
 
                 testDatabase "Query all width from the sqlite table"
-                    <| fun connectionStringMemory ->
-                        connectionStringMemory
-                        |> Sql.connect
-                        |> Sql.query """
+                <| fun connectionStringMemory ->
+                    connectionStringMemory
+                    |> Sql.connect
+                    |> Sql.query
+                        """
                         SELECT * FROM Width
                         """
-                        |> Sql.execute (fun read ->
-                             { Width = read.double "Width"  })
-                        |> function
+                    |> Sql.execute (fun read -> { Width = read.double "Width" })
+                    |> function
                         | Ok x ->
                             // printfn "queried data %A" x
                             pass ()
                         | otherwise ->
                             printfn "error %A" otherwise
-                            fail ()
-                         ]
-          testList "Compare results records" [
-            testCase "Inserted records should be the same as queried records" <| fun _ ->
-                let expected = sqlRecords
-                let actual =
-                    connectionStringMemory
-                    |> Sql.connect
-                    |> Sql.query """
+                            fail () ]
+          testList
+              "Compare results records"
+              [ testCase "Inserted records should be the same as queried records"
+                <| fun _ ->
+                    let expected = sqlRecords
+
+                    let actual =
+                        connectionStringMemory
+                        |> Sql.connect
+                        |> Sql.query
+                            """
                     SELECT * FROM SqlRecords
                     """
-                    |> Sql.execute (fun read ->
-                         { TimeStamp = read.string "TimeStamp"
-                           MeterId = read.string "MeterId"
-                           RowKey = read.string "RowKey"
-                           MeterType = read.string "MeterType"
-                           Value = read.floatOrNone "Value"
-                           SingleValue = read.float32OrNone "Value"
-                           Error = read.stringOrNone "Error" })
-                    |> function
-                    | Ok x ->
-                        printfn "queried data %A" x
-                        x |> List.distinct
-                    | otherwise ->
-                        printfn "error %A" otherwise
-                        []
-                Expect.equal actual expected "Result should be true"
-            ]             ]
+                        |> Sql.execute (fun read ->
+                            { TimeStamp = read.string "TimeStamp"
+                              MeterId = read.string "MeterId"
+                              RowKey = read.string "RowKey"
+                              MeterType = read.string "MeterType"
+                              Value = read.floatOrNone "Value"
+                              SingleValue = read.float32OrNone "Value"
+                              Error = read.stringOrNone "Error" })
+                        |> function
+                            | Ok x ->
+                                printfn "queried data %A" x
+                                x |> List.distinct
+                            | otherwise ->
+                                printfn "error %A" otherwise
+                                []
+
+                    Expect.equal actual expected "Result should be true" ] ]
 
 let config =
-        { defaultConfig with
-            runInParallel = false }
+    { defaultConfig with
+        runInParallel = false }
+
 [<EntryPoint>]
-let main argv =
-    runTestsInAssembly config argv
+let main argv = runTestsInAssemblyWithCLIArgs [] argv

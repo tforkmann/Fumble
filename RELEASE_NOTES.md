@@ -1,3 +1,5 @@
+#### 1.0.2 - 2024-01-12
+*  Update to net8.0
 #### 1.0.1 - 2023-05-29
 *  Renaming Sqlite to Sql to align with with Npgsql.FSharp
 #### 1.0.0 - 2023-05-28

@@ -1,5 +1,5 @@
 STORAGE: NONE
-RESTRICTION: == net7.0
+RESTRICTION: == net8.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
     BlackFox.VsWhere (1.1)
@@ -112,23 +112,14 @@ NUGET
       System.Reactive (>= 5.0 < 6.0)
     FSharp.Core (8.0.101)
     Microsoft.Build.Framework (17.8.3)
-      Microsoft.Win32.Registry (>= 5.0)
-      System.Memory (>= 4.5.5)
-      System.Runtime.CompilerServices.Unsafe (>= 6.0)
-      System.Security.Principal.Windows (>= 5.0)
     Microsoft.Build.Utilities.Core (17.8.3)
       Microsoft.Build.Framework (>= 17.8.3)
       Microsoft.NET.StringTools (>= 17.8.3)
-      Microsoft.Win32.Registry (>= 5.0)
+      Microsoft.VisualStudio.Setup.Configuration.Interop (>= 3.2.2146)
       System.Collections.Immutable (>= 7.0)
       System.Configuration.ConfigurationManager (>= 7.0)
-      System.Memory (>= 4.5.5)
-      System.Runtime.CompilerServices.Unsafe (>= 6.0)
-      System.Security.Principal.Windows (>= 5.0)
-      System.Text.Encoding.CodePages (>= 7.0)
     Microsoft.NET.StringTools (17.8.3)
-      System.Memory (>= 4.5.5)
-      System.Runtime.CompilerServices.Unsafe (>= 6.0)
+    Microsoft.VisualStudio.Setup.Configuration.Interop (3.8.2112)
     Microsoft.Win32.Registry (5.0)
       System.Security.AccessControl (>= 5.0)
       System.Security.Principal.Windows (>= 5.0)
@@ -157,21 +148,18 @@ NUGET
       System.Security.Cryptography.ProtectedData (>= 8.0)
     System.Diagnostics.EventLog (8.0)
     System.Formats.Asn1 (8.0)
-    System.Memory (4.5.5)
     System.Reactive (5.0)
-    System.Runtime.CompilerServices.Unsafe (6.0)
     System.Security.AccessControl (6.0)
     System.Security.Cryptography.Pkcs (8.0)
       System.Formats.Asn1 (>= 8.0)
     System.Security.Cryptography.ProtectedData (8.0)
     System.Security.Principal.Windows (5.0)
-    System.Text.Encoding.CodePages (8.0)
     System.Text.Encodings.Web (8.0)
     System.Text.Json (8.0.1)
       System.Text.Encodings.Web (>= 8.0)
 
 GROUP Docs
-RESTRICTION: == net7.0
+RESTRICTION: == net8.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
     Azure.Core (1.37)
@@ -249,11 +237,11 @@ NUGET
     EPPlus (7.0.6)
       EPPlus.Interfaces (>= 6.1.1)
       EPPlus.System.Drawing (>= 6.1.1)
-      Microsoft.Extensions.Configuration.Json (>= 7.0)
+      Microsoft.Extensions.Configuration.Json (>= 8.0)
       Microsoft.IO.RecyclableMemoryStream (>= 3.0)
       System.ComponentModel.Annotations (>= 5.0)
-      System.Security.Cryptography.Pkcs (>= 7.0.3)
-      System.Text.Encoding.CodePages (>= 7.0)
+      System.Security.Cryptography.Pkcs (>= 8.0)
+      System.Text.Encoding.CodePages (>= 8.0)
     EPPlus.Interfaces (6.1.1)
     EPPlus.System.Drawing (6.1.1)
       EPPlus.Interfaces (>= 6.1.1)
@@ -1063,7 +1051,7 @@ NUGET
 
 GROUP Sqlite
 STORAGE: NONE
-RESTRICTION: == net7.0
+RESTRICTION: == net8.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
     Azure.Core (1.37)
