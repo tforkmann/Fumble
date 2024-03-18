@@ -1,4 +1,3 @@
 group Sqlite
     Microsoft.Data.Sqlite
-    Microsoft.Data.SqlClient
     FSharp.Core

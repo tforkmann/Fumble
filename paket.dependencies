@@ -15,7 +15,6 @@ group Sqlite
     framework: net8.0
     source https://api.nuget.org/v3/index.json
     nuget FSharp.Core
-    nuget Microsoft.Data.SqlClient
     nuget Microsoft.Data.Sqlite
 
 group Test

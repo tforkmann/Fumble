@@ -1,3 +1,5 @@
+#### 1.0.3 - 2024-03-18
+*  Remove SqlClient dependency
 #### 1.0.2 - 2024-01-12
 *  Update to net8.0
 #### 1.0.1 - 2023-05-29
