@@ -1,3 +1,5 @@
+#### 1.1.0 - 2024-12-11
+*  Support for NET9
 #### 1.0.3 - 2024-03-18
 *  Remove SqlClient dependency
 #### 1.0.2 - 2024-01-12
