@@ -1,27 +1,27 @@
 {
-  "version": 1,
-  "isRoot": true,
-  "tools": {
-    "fake-cli": {
-      "version": "6.1.3",
-      "commands": [
-        "fake"
-      ],
-      "rollForward": false
-    },
-    "paket": {
-      "version": "9.0.2",
-      "commands": [
-        "paket"
-      ],
-      "rollForward": false
-    },
-    "fantomas": {
-      "version": "6.3.16",
-      "commands": [
-        "fantomas"
-      ],
-      "rollForward": false
+    "version": 1,
+    "isRoot": true,
+    "tools": {
+        "fake-cli": {
+            "version": "6.1.3",
+            "commands": [
+                "fake"
+            ],
+            "rollForward": false
+        },
+        "paket": {
+            "version": "9.0.2",
+            "commands": [
+                "paket"
+            ],
+            "rollForward": false
+        },
+        "fantomas": {
+            "version": "7.0.1",
+            "commands": [
+                "fantomas"
+            ],
+            "rollForward": false
+        }
     }
-  }
 }

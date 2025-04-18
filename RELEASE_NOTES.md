@@ -1,3 +1,5 @@
+#### 1.2.0 - 2025-04-18
+*  Support DateTime options by default
 #### 1.1.0 - 2024-12-11
 *  Support for NET9
 #### 1.0.3 - 2024-03-18

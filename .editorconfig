@@ -1,7 +1,14 @@
-[*]
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*.{fs,fsx,fsi}]
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
-insert_final_newline = true
-
-fsharp_multiline_block_brackets_on_same_column = true
-fsharp_experimental_stroustrup_style = true
+end_of_line = lf
+fsharp_multiline_bracket_style = stroustrup

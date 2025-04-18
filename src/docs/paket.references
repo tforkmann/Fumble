@@ -1,4 +1,5 @@
 group Docs
+
 Feliz.Router
 Zanaptak.TypedCssClasses
 Fable.SimpleHttp
@@ -7,4 +8,3 @@ Feliz.UseDeferred
 Feliz.Popover
 Feliz.Markdown
 Feliz.Bulma
-Chia.Client
