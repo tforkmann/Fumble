@@ -14,7 +14,7 @@ let connectionStringMemory = sprintf @"Data Source=trades.db"
 
 type TradeData =
     { Symbol: string
-      Timestamp: DateTime
+      Timestamp: DateTime option
       Price: float
       TradeSize: float }
 
@@ -37,37 +37,37 @@ type Width = { Width: float }
 // Sample Data
 let trades =
     [ { Symbol = "BTC/USD"
-        Timestamp = new DateTime(2017, 07, 28, 10, 44, 33)
+        Timestamp = new DateTime(2017, 07, 28, 10, 44, 33) |> Some
         Price = 2751.20
         TradeSize = 0.01000000 }
       { Symbol = "BTC/USD"
-        Timestamp = new DateTime(2017, 07, 28, 10, 44, 21)
+        Timestamp = new DateTime(2017, 07, 28, 10, 44, 21) |> Some
         Price = 2750.20
         TradeSize = 0.01000000 }
       { Symbol = "BTC/USD"
-        Timestamp = new DateTime(2017, 07, 28, 10, 44, 21)
+        Timestamp = new DateTime(2017, 07, 28, 10, 44, 21) |> Some
         Price = 2750.01
         TradeSize = 0.40000000 }
       { Symbol = "BTC/USD"
-        Timestamp = new DateTime(2017, 07, 28, 10, 44, 21)
+        Timestamp = new DateTime(2017, 07, 28, 10, 44, 21) |> Some
         Price = 2750.01
         TradeSize = 0.55898959 }
       { Symbol = "BTC/USD"
-        Timestamp = new DateTime(2017, 07, 28, 10, 44, 03)
+        Timestamp = new DateTime(2017, 07, 28, 10, 44, 03) |> Some
         Price = 2750.00
         TradeSize = 0.86260000 }
       { Symbol = "BTC/USD"
-        Timestamp = new DateTime(2017, 07, 28, 10, 44, 03)
+        Timestamp = new DateTime(2017, 07, 28, 10, 44, 03) |> Some
         Price = 2750.00
         TradeSize = 0.03000000 }
       { Symbol = "BTC/USD"
-        Timestamp = new DateTime(2017, 07, 28, 10, 43, 31)
+        Timestamp = new DateTime(2017, 07, 28, 10, 43, 31) |> Some
         Price = 2750.01
         TradeSize = 0.44120000 } ]
 
 let tradesSingle =
     { Symbol = "BTC/USD"
-      Timestamp = new DateTime(2020, 07, 28, 10, 43, 31)
+      Timestamp = new DateTime(2020, 07, 28, 10, 43, 31) |> Some
       Price = 2750.01
       TradeSize = 0.44120000 }
 
@@ -227,7 +227,7 @@ let tests =
                     """
                     |> Sql.execute (fun read ->
                         { Symbol = read.string "Symbol"
-                          Timestamp = read.dateTime "Timestamp"
+                          Timestamp = read.dateTimeOrNone "Timestamp"
                           Price = read.double "Price"
                           TradeSize = read.double "TradeSize" })
                     |> function

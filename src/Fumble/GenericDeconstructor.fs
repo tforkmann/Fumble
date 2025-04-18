@@ -41,6 +41,7 @@ module GenericDeconstructor =
                     | "Microsoft.FSharp.Core.FSharpOption`1[System.Single]" -> "float32 NULL"
                     | "Microsoft.FSharp.Core.FSharpOption`1[System.Double]" -> "float NULL"
                     | "Microsoft.FSharp.Core.FSharpOption`1[System.Int32]" -> "int NULL"
+                    | "Microsoft.FSharp.Core.FSharpOption`1[System.DateTime]" -> "varchar(20) NULL"
                     | x ->
                         failwithf "unmatched property %s" x
 
