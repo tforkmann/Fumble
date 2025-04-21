@@ -1,30 +1,49 @@
-name: Release docs
+name: Docs
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-    - '*'
-
+    branches: [ main ]
+    paths:
+      - 'src/Docs/**'
+      - '.github/workflows/Docs.yml'
 jobs:
   build:
-
-    runs-on: windows-latest
-
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 9.0.203
-    - name: Restore tools
-      run: dotnet tool restore
-    - name: Run Fornax
-      run: dotnet run -- PublishDocs
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        personal_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/_public
-        publish_branch: gh-pages
-        force_orphan: true
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.201
+
+      - name: Install Tools
+        run: dotnet tool restore
+
+      - name: Build
+        run: dotnet run -- PublishDocs
+
+      - name: Publish Docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: publish/docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download app artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+          path: docs
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: docs
+          CLEAN: true

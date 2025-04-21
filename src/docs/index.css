@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+html, body {
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+#safer-app {
+    display: flex;
+    flex-flow: column;
+    height: 100%
+}
+
+@plugin 'daisyui' {
+    themes: all;
+}

@@ -10,6 +10,10 @@ open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open Fake.Tools
 open Helpers
+
+open BuildHelpers
+open BuildTools
+
 initializeContext()
 
 //-----------------------------------------------
@@ -219,20 +223,12 @@ Target.create "Push" (fun _ -> pushPackage [] )
 let docsSrcPath = Path.getFullName "./src/docs"
 let docsDeployPath = "docs"
 
-Target.create "InstallDocs" (fun _ ->
-
-    runTool yarnTool "install --frozen-lockfile" docsSrcPath
-    runDotNet "restore" docsSrcPath )
-
 Target.create "PublishDocs" (fun _ ->
-    let docsDeployLocalPath = (docsSrcPath </> "deploy")
-    [ docsDeployPath; docsDeployLocalPath] |> Shell.cleanDirs
-    runTool yarnTool"webpack-cli -p" docsSrcPath
-    Shell.copyDir docsDeployPath docsDeployLocalPath FileFilter.allFiles
+    Tools.npm "run build" ""
 )
 
-
-Target.create "RunDocs" (fun _ -> runTool npmTool "webpack-dev-server" docsSrcPath)
+Target.create "RunDocs" (fun _ ->
+    Tools.npm "run start" "")
 
 Target.runOrDefault "Build"
 

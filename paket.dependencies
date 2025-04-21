@@ -26,12 +26,17 @@ group Test
 group Docs
     source https://api.nuget.org/v3/index.json
     framework: net9.0
-    nuget Feliz.Router
-    nuget Zanaptak.TypedCssClasses
-    nuget Fable.SimpleHttp
-    nuget Feliz.ElmishComponents
-    nuget Feliz.UseDeferred
-    nuget Feliz.Popover
-    nuget Feliz.Markdown
+    nuget Fable.Elmish.Debugger
+    nuget Fable.Mocha
     nuget Feliz.Bulma
-    nuget Chia.Client
+    nuget Feliz.Router
+    nuget Feliz.Markdown
+    nuget Feliz.UseElmish
+    nuget Feliz.DaisyUI
+    nuget Feliz.Tailwind
+    nuget Fake.Core.Target
+    nuget Fake.DotNet.Cli
+    nuget Fake.Core.ReleaseNotes
+    nuget Fake.Tools.Git
+    nuget Fake.Core.UserInput
+    nuget Fable.Elmish.HMR

@@ -1,6 +1,7 @@
-module Helpers
+module BuildHelpers
 
 open Fake.Core
+open Fake.DotNet
 
 let initializeContext () =
     let execContext = Context.FakeExecutionContext.Create false "build.fsx" [ ]
@@ -71,29 +72,6 @@ let createProcess exe arg dir =
     |> CreateProcess.withWorkingDirectory dir
     |> CreateProcess.ensureExitCode
 
-let dotnet = createProcess "dotnet"
-let npm =
-    let npmPath =
-        match ProcessUtils.tryFindFileOnPath "npm" with
-        | Some path -> path
-        | None ->
-            "npm was not found in path. Please install it and make sure it's available from your path. " +
-            "See https://safe-stack.github.io/docs/quickstart/#install-pre-requisites for more info"
-            |> failwith
-
-    createProcess npmPath
-
-let yarn =
-    let yarnPath =
-        match ProcessUtils.tryFindFileOnPath "yarn" with
-        | Some path -> path
-        | None ->
-            "npm was not found in path. Please install it and make sure it's available from your path. " +
-            "See https://safe-stack.github.io/docs/quickstart/#install-pre-requisites for more info"
-            |> failwith
-
-    createProcess yarnPath
-
 let run proc arg dir =
     proc arg dir
     |> Proc.run
@@ -104,11 +82,11 @@ let runParallel processes =
     |> Proc.Parallel.run
     |> ignore
 
-let runOrDefault args =
+let runOrDefault defTarget args =
     try
         match args with
         | [| target |] -> Target.runOrDefault target
-        | _ -> Target.runOrDefault "Run"
+        | _ -> Target.runOrDefault defTarget
         0
     with e ->
         printfn "%A" e
