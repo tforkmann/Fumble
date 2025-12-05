@@ -1,4 +1,4 @@
-#### 2.0.0 - 2025-12-05
+#### 2.0.1 - 2025-12-05
 * **BREAKING**: Changed CREATE TABLE type mappings to use proper SQLite types (TEXT, INTEGER, REAL, BLOB)
 * Add TimeSpan support (stored as ticks in INTEGER)
 * Add DateOnly support (stored as TEXT yyyy-MM-dd)
