@@ -1,11 +1,8 @@
-﻿module Docs.Pages.BoxShadow
+module Docs.Pages.InsertData
 
 open Feliz
-open Elmish
-open Feliz.UseElmish
 open Feliz.DaisyUI
 open Feliz.Tailwind
-open Feliz.Tailwind.Operators
 open Docs.SharedView
 
 let boxShadowStyles =
@@ -61,8 +58,36 @@ let renderBoxShadow boxShadow =
     codedView title code example
 
 [<ReactComponent>]
-let BoxShadowView () =
+let InsertDataView () =
     React.fragment [
-        for boxShadow in boxShadowStyles do
-            renderBoxShadow boxShadow
+        Html.divClassed "description" [ Html.text "Fumble - InsertData" ]
+        Html.divClassed "max-w-xl" [ linedMockupCode "Connect to your database" ]
+        Html.divClassed "description" [
+            Html.text "Get the connection from the environment"
+            Html.code [
+                prop.className "code"
+                prop.text """
+                    open Fumble
+                    let connectionString() = Env.getVar "app_d" """
+            ]
+        ]
+        Html.divClassed "max-w-xl" [ linedMockupCode "Insert trade data into database with commandInsert" ]
+        Html.divClassed "description" [
+            Html.code [
+                prop.className "code"
+                prop.text """
+                    connectionString()
+                    |> Sqlite.connect
+                    |> Sqlite.commandInsert<Trades>("Trades,trades)
+                    |> Sqlite.insertData trades
+                    |> function
+                    | Ok x ->
+                        printfn "rows affected %A" x.Length
+                        pass ()
+                    | otherwise ->
+                        printfn "error %A" otherwise
+                        fail () """
+            ]
+        ]
+        fixDocsView "InsertData"
     ]

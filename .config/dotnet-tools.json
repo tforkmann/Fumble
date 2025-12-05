@@ -9,6 +9,13 @@
             ],
             "rollForward": false
         },
+        "fable": {
+            "version": "4.24.0",
+            "commands": [
+                "fable"
+            ],
+            "rollForward": false
+        },
         "paket": {
             "version": "9.0.2",
             "commands": [

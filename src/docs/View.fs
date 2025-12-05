@@ -1,58 +1,135 @@
-module View
+module Docs.View
 
-open Domain
 open Feliz
-open Feliz.Bulma
 open Router
+open Elmish
+open SharedView
+open Feliz.DaisyUI
+open Feliz.DaisyUI.Operators
 
-let menuPart model dispatch =
-    let item (t: string) p =
-        let isActive =
-            if model.CurrentPage = p then
-                [ helpers.isActive
-                   ]
-            else
-                []
+type Msg =
+    | UrlChanged of Page
+    | SetTheme of string
 
-        Bulma.menuItem.a
-            [ yield! isActive
-              prop.onClick (fun _ -> (SentToast t) |> dispatch)
-              prop.text t
-              prop.href (getHref p) ]
+type State = { Page: Page; Theme: string }
 
-    Bulma.menu
-        [ Bulma.menuLabel "Fumble"
-          Bulma.menuList [
-              item "Overview" Fumble
-              item "QueryTable" QueryTable
-            //   item "HandleNullValues" HandleNullValues
-            //   item "ProvidingDefaultValues" ProvidingDefaultValues
-            //   item "ParameterizedQuery" ParameterizedQuery
-              item "InsertData" InsertData
-               ] ]
+let init () =
+    let nextPage = Router.currentUrl () |> Page.parseFromUrlSegments
+    { Page = nextPage; Theme = "corporate" }, Cmd.navigatePage nextPage
 
-let contentPart model dispatch =
-    match model.CurrentPage with
-    | Fumble -> Fumble.overview
-    | QueryTable -> QueryTable.overview
-    | HandleNullValues -> HandleNullValues.overview
-    | ProvidingDefaultValues -> ProvidingDefaultValues.overview
-    | ParameterizedQuery -> ParameterizedQuery.overview
-    | InsertData -> InsertData.overview
+let update (msg: Msg) (state: State) : State * Cmd<Msg> =
+    match msg with
+    | UrlChanged page -> { state with Page = page }, Cmd.none
+    | SetTheme theme -> { state with Theme = theme }, Cmd.none
 
-let view (model: Model) (dispatch: Msg -> unit) =
+let private rightSide state dispatch (title: string) (docLink: string) elm =
+    Daisy.drawerContent [
+        Daisy.navbar [
+            Daisy.navbarStart [
+                Html.divClassed "lg:hidden" [
+                    Daisy.button.label [
+                        button.square
+                        button.ghost
+                        prop.htmlFor "main-menu"
+                        prop.children [
+                            Svg.svg [
+                                svg.viewBox (0, 0, 24, 24)
+                                svg.className "inline-block w-6 h-6 stroke-current"
+                                svg.children [ Svg.path [ svg.d "M4 6h16M4 12h16M4 18h16"; svg.strokeWidth 2 ] ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
 
-    let render =
-        Bulma.container
-            [ Bulma.section
-                [ Bulma.tile
-                    [ tile.isAncestor
-                      prop.children
-                          [ Bulma.tile
-                              [ tile.is2
-                                prop.children (menuPart model dispatch) ]
-                            Bulma.tile (contentPart model dispatch) ] ] ] ]
+        Html.divClassed "px-5 py-5" [
+            Html.h2 [
+                color.textPrimary ++ prop.className "my-6 text-5xl font-bold"
+                prop.text title
+            ]
+            elm
+        ]
+    ]
 
-    React.router
-        [ router.onUrlChanged (parseUrl >> UrlChanged >> dispatch)
-          router.children render ]
+let private leftSide (p: Page) =
+    let mi (t: string) (mp: Page) =
+        Html.li [
+            Html.a [
+                if p = mp then
+                    menuItem.active
+                prop.text t
+                prop.href mp
+                prop.onClick Router.goToUrl
+            ]
+        ]
+
+    Daisy.drawerSide [
+        Daisy.drawerOverlay [ prop.htmlFor "main-menu" ]
+        Html.aside [
+            prop.className "flex flex-col border-r w-80 bg-base-100 text-base-content"
+            prop.children [
+                Html.divClassed "inline-block text-3xl font-title px-5 py-5 font-bold" [
+                    Html.span [ color.textPrimary; prop.text "Fumble" ]
+                    Html.a [
+                        prop.href "https://www.nuget.org/packages/Fumble"
+                        prop.children [
+                            Html.img [
+                                prop.src "https://img.shields.io/nuget/v/Fumble.svg?style=flat-square"
+                            ]
+                        ]
+                    ]
+                ]
+                Daisy.menu [
+                    menu.md
+                    prop.className "flex flex-col p-4 pt-0"
+                    prop.children [
+                        Daisy.menuTitle [ Html.span "Docs" ]
+                        mi "Install" Page.Install
+                        mi "Use" Page.Use
+                        mi "QueryTable" Page.QueryTable
+                        // mi "Handle Null Values" Page.HandleNullValues
+                        // mi "Parameterized Query" Page.ParameterizedQuery
+                        mi "Insert Data" Page.InsertData
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+let private inLayout state dispatch (title: string) (docLink: string) (p: Page) (elm: ReactElement) =
+    Html.div [
+        prop.className "bg-base-100 text-base-content h-screen"
+        theme.custom state.Theme
+        prop.children [
+            Daisy.drawer [
+                prop.className "lg:drawer-open"
+                prop.children [
+                    Daisy.drawerToggle [ prop.id "main-menu" ]
+                    rightSide state dispatch title docLink elm
+                    leftSide p
+                ]
+            ]
+        ]
+    ]
+
+[<ReactComponent>]
+let AppView (state: State) (dispatch: Msg -> unit) =
+
+    let title, docLink, content =
+        match state.Page with
+        | Page.Install -> "Installation", "/docs/install", Pages.Install.InstallView()
+        | Page.Use -> "How to use", "/docs/use", Pages.Use.UseView()
+        | Page.QueryTable -> "QueryTable", "/docs/use", Pages.QueryTable.QueryTableView()
+        // | Page.HandleNullValues -> "Handle Null Values", "/docs/use", Pages.HandleNullValues.HandleNullValuesView()
+        // | Page.ProvidingDefaultValues  -> "Providing Default Values", "/docs/use", Pages.ProvidingDefaultValues.ProvidingDefaultValuesView()
+        // | Page.ParameterizedQuery -> "Parameterized Query", "/docs/use", Pages.ParameterizedQuery.ParameterizedQueryView()
+        | Page.InsertData -> "Insert Data", "/docs/use", Pages.InsertData.InsertDataView()
+
+
+
+    React.router [
+        router.hashMode
+        router.onUrlChanged (Page.parseFromUrlSegments >> UrlChanged >> dispatch)
+        router.children [ content |> inLayout state dispatch title docLink state.Page ]
+    ]

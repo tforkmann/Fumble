@@ -7,17 +7,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Router.fs" />
-    <Compile Include="Domain.fs" />
-    <Compile Include="Shared.fs" />
-    <Compile Include="views\Fumble\Fumble.fs" />
-    <Compile Include="views\Fumble\QueryTable.fs" />
-    <Compile Include="views\Fumble\HandleNullValues.fs" />
-    <Compile Include="views\Fumble\ProvidingDefaultValues.fs" />
-    <Compile Include="views\Fumble\ParameterizedQuery.fs" />
-    <Compile Include="views\Fumble\InsertData.fs" />
+    <Compile Include="SharedView.fs" />
+    <Compile Include="Pages\Install.fs" />
+    <Compile Include="Pages\Use.fs" />
+    <Compile Include="Pages\QueryTable.fs" />
+    <Compile Include="Pages\HandleNullValues.fs" />
+    <Compile Include="Pages\InsertData.fs" />
+    <Compile Include="Pages\ParameterizedQuery.fs" />
     <Compile Include="View.fs" />
-    <Compile Include="State.fs" />
     <Compile Include="App.fs" />
+    <Content Include="index.html" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

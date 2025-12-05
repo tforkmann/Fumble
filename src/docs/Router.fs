@@ -1,32 +1,55 @@
-module Router
+module Docs.Router
 
+open Browser.Types
 open Feliz.Router
+open Fable.Core.JsInterop
 
+[<RequireQualifiedAccess>]
 type Page =
-    | Fumble
+    | Install
+    | Use
     | QueryTable
-    | HandleNullValues
-    | ProvidingDefaultValues
-    | ParameterizedQuery
+    // | HandleNullValues  //TODO: Implement this page
+    // | ProvidingDefaultValues // TODO: Implement this page
+    // | ParameterizedQuery // TODO: Implement this page
     | InsertData
 
-let defaultPage = Fumble
+module Page =
+    let defaultPage = Page.Install
 
-let parseUrl =
-    function
-    | [ "" ] -> Fumble
-    | [ "querytable" ] -> QueryTable
-    | [ "handlenullvalues" ] -> HandleNullValues
-    | [ "providingdefaultvalues" ] -> ProvidingDefaultValues
-    | [ "parameterizedquery" ] -> ParameterizedQuery
-    | [ "insertdata" ] -> InsertData
-    | _ -> defaultPage
+    let parseFromUrlSegments =
+        function
+        | [ "use" ] -> Page.Use
+        | [ "querytable" ] -> Page.QueryTable
+        // | [ "handlenullvalues" ] -> Page.HandleNullValues
+        // | [ "providingdefaultvalues" ] -> Page.ProvidingDefaultValues
+        // | [ "parameterizedquery" ] -> Page.ParameterizedQuery
+        | [ "insertdata" ] -> Page.InsertData
+        | [] -> Page.Install
+        | _ -> defaultPage
 
-let getHref =
-    function
-    | Fumble -> Router.format ("")
-    | QueryTable -> Router.format ("querytable")
-    | HandleNullValues -> Router.format ("handlenullvalues")
-    | ProvidingDefaultValues -> Router.format ("providingdefaultvalues")
-    | ParameterizedQuery -> Router.format ("parameterizedquery")
-    | InsertData -> Router.format ("insertdata")
+    let noQueryString segments : string list * (string * string) list = segments, []
+
+    let toUrlSegments =
+        function
+        | Page.Install -> [] |> noQueryString
+        | Page.Use -> [ "use" ] |> noQueryString
+        | Page.QueryTable -> [ "querytable" ] |> noQueryString
+        // | Page.HandleNullValues -> [ "handlenullvalues" ] |> noQueryString
+        // | Page.ProvidingDefaultValues -> [ "providingdefaultvalues" ] |> noQueryString
+        // | Page.ParameterizedQuery -> [ "parameterizedquery" ] |> noQueryString
+        | Page.InsertData -> [ "insertdata" ] |> noQueryString
+
+[<RequireQualifiedAccess>]
+module Router =
+    let goToUrl (e: MouseEvent) =
+        e.preventDefault ()
+        let href: string = !!e.currentTarget?attributes?href?value
+        Router.navigate href
+
+    let navigatePage (p: Page) =
+        p |> Page.toUrlSegments |> Router.navigate
+
+[<RequireQualifiedAccess>]
+module Cmd =
+    let navigatePage (p: Page) = p |> Page.toUrlSegments |> Cmd.navigate

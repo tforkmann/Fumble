@@ -12,7 +12,7 @@ let InstallView () =
             Daisy.mockupCode [
                 Html.pre [
                     mockupCode.prefix "$"
-                    prop.children [ Html.code "Install-Package Feliz.Tailwind" ]
+                    prop.children [ Html.code "Install-Package Fumble" ]
                 ]
             ]
         ]
@@ -21,7 +21,7 @@ let InstallView () =
             Daisy.mockupCode [
                 Html.pre [
                     mockupCode.prefix "$"
-                    prop.children [ Html.code "paket add Feliz.Tailwind" ]
+                    prop.children [ Html.code "paket add Fumble" ]
                 ]
             ]
         ]

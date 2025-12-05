@@ -7,10 +7,10 @@ open Docs.SharedView
 let UseView () =
     React.fragment [
         Html.divClassed "description" [ Html.text "After installation just open proper namespace:" ]
-        Html.divClassed "max-w-xl" [ linedMockupCode "open Feliz.Tailwind" ]
+        Html.divClassed "max-w-xl" [ linedMockupCode "open Fumble" ]
         Html.divClassed "description" [
             Html.text "Now you can start using library. Everything important starts with "
-            Html.code [ prop.className "code"; prop.text "Tailwind.*" ]
+            Html.code [ prop.className "code"; prop.text "Fumble.*" ]
             Html.text " module."
         ]
     ]

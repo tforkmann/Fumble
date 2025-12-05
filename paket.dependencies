@@ -39,4 +39,4 @@ group Docs
     nuget Fake.Core.ReleaseNotes
     nuget Fake.Tools.Git
     nuget Fake.Core.UserInput
-    nuget Fable.Elmish.HMR
+    nuget Fable.Elmish.React
