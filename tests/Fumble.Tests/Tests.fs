@@ -139,12 +139,22 @@ let sqlRecords = [
 
 let props = tradesSingle.GetType().GetProperties()
 
+// Helper function to drop tables before creating them (handles schema changes)
+let dropTableIfExists tableName connectionString =
+    connectionString
+    |> Sql.connect
+    |> Sql.query (sprintf "DROP TABLE IF EXISTS %s" tableName)
+    |> Sql.executeNonQuery
+    |> ignore
+
 [<Tests>]
 let tests =
-    testList "Fumble" [
+    testSequenced <| testList "Fumble" [
         testList "Create and insert" [
             testDatabase "Create trade table"
             <| fun connectionStringMemory ->
+                // Drop existing table to handle schema changes
+                dropTableIfExists "Trades" connectionStringMemory
                 connectionStringMemory
                 |> Sql.connect
                 |> Sql.commandCreate<TradeData> ("Trades")
@@ -156,6 +166,7 @@ let tests =
                         fail ()
             testDatabase "Create status table with optional status"
             <| fun connectionStringMemory ->
+                dropTableIfExists "Status" connectionStringMemory
                 connectionStringMemory
                 |> Sql.connect
                 |> Sql.commandCreate<Status> ("Status")
@@ -167,6 +178,7 @@ let tests =
                         fail ()
             testDatabase "Create sqlrecords table"
             <| fun connectionStringMemory ->
+                dropTableIfExists "SqlRecords" connectionStringMemory
                 connectionStringMemory
                 |> Sql.connect
                 |> Sql.commandCreate<SqlRecord> ("SqlRecords")
@@ -178,6 +190,7 @@ let tests =
                         fail ()
             testDatabase "Create width table"
             <| fun connectionStringMemory ->
+                dropTableIfExists "Width" connectionStringMemory
                 connectionStringMemory
                 |> Sql.connect
                 |> Sql.commandCreate<Width> ("Width")
@@ -356,9 +369,10 @@ let tests =
         // New Feature Tests for v2.0
         // ============================================
 
-        testList "New data types" [
+        testSequenced <| testList "New data types" [
             testCase "Create table with new types"
             <| fun _ ->
+                dropTableIfExists "NewTypes" connectionStringMemory
                 connectionStringMemory
                 |> Sql.connect
                 |> Sql.commandCreate<NewTypesRecord> "NewTypes"
@@ -435,6 +449,7 @@ let tests =
         testList "executeScalar tests" [
             testCase "executeScalar returns count"
             <| fun _ ->
+                // Use the persistent database - depends on earlier tests inserting data
                 connectionStringMemory
                 |> Sql.connect
                 |> Sql.query "SELECT COUNT(*) FROM Trades"
