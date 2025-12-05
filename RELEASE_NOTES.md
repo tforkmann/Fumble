@@ -1,3 +1,19 @@
+#### 2.0.0 - 2025-12-05
+* **BREAKING**: Changed CREATE TABLE type mappings to use proper SQLite types (TEXT, INTEGER, REAL, BLOB)
+* Add TimeSpan support (stored as ticks in INTEGER)
+* Add DateOnly support (stored as TEXT yyyy-MM-dd)
+* Add TimeOnly support (stored as ticks in INTEGER)
+* Add byte, uint32, uint64 parameter and reader support
+* Add executeScalar and executeScalarAsync for single value queries
+* Add executeCount helper for COUNT queries
+* Add executeExists helper for existence checks
+* Add pagination helpers: skip, take, paginate
+* Add SQLite-specific helpers: connectInMemory, connectInMemoryShared
+* Add SQLite pragma helpers: pragma, pragmaSet, enableForeignKeys, enableWalMode, etc.
+* Add database introspection: listTables, listIndexes, tableInfo, sqliteVersion
+* Add maintenance functions: vacuum, analyze
+* Add bulk operations: bulkUpdate, bulkDelete, upsert
+
 #### 1.2.0 - 2025-04-18
 *  Support DateTime options by default
 #### 1.1.0 - 2024-12-11

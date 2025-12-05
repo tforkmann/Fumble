@@ -11,6 +11,7 @@
     <Compile Include="Pages\Install.fs" />
     <Compile Include="Pages\Use.fs" />
     <Compile Include="Pages\QueryTable.fs" />
+    <Compile Include="Pages\NewFeatures.fs" />
     <Compile Include="Pages\HandleNullValues.fs" />
     <Compile Include="Pages\InsertData.fs" />
     <Compile Include="Pages\ParameterizedQuery.fs" />

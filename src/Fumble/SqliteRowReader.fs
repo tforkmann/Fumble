@@ -237,3 +237,69 @@ type RowReader(reader: SqliteDataReader) =
             match columnDict.TryGetValue(column) with
             | true, columnIndex -> if reader.IsDBNull(columnIndex) then None else Some(reader.GetDouble(columnIndex))
             | false, _ -> failToRead column "float"
+
+        member __.uint32(columnIndex: int): uint32 = Convert.ToUInt32(reader.GetValue(columnIndex))
+
+        member __.uint32(column: string): uint32 =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> __.uint32(columnIndex)
+            | false, _ -> failToRead column "uint32"
+
+        member __.uint32OrNone(column: string): uint32 option =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> if reader.IsDBNull(columnIndex) then None else Some(__.uint32(columnIndex))
+            | false, _ -> failToRead column "uint32"
+
+        member __.uint64(columnIndex: int): uint64 = Convert.ToUInt64(reader.GetValue(columnIndex))
+
+        member __.uint64(column: string): uint64 =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> __.uint64(columnIndex)
+            | false, _ -> failToRead column "uint64"
+
+        member __.uint64OrNone(column: string): uint64 option =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> if reader.IsDBNull(columnIndex) then None else Some(__.uint64(columnIndex))
+            | false, _ -> failToRead column "uint64"
+
+        /// Reads the column as TimeSpan (stored as ticks in int64)
+        member __.timeSpan(columnIndex: int): TimeSpan = TimeSpan.FromTicks(reader.GetInt64(columnIndex))
+
+        /// Reads the column as TimeSpan (stored as ticks in int64)
+        member __.timeSpan(column: string): TimeSpan =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> __.timeSpan(columnIndex)
+            | false, _ -> failToRead column "TimeSpan"
+
+        member __.timeSpanOrNone(column: string): TimeSpan option =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> if reader.IsDBNull(columnIndex) then None else Some(__.timeSpan(columnIndex))
+            | false, _ -> failToRead column "TimeSpan"
+
+        /// Reads the column as DateOnly (stored as string yyyy-MM-dd)
+        member __.dateOnly(columnIndex: int): DateOnly = DateOnly.Parse(reader.GetString(columnIndex))
+
+        /// Reads the column as DateOnly (stored as string yyyy-MM-dd)
+        member __.dateOnly(column: string): DateOnly =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> __.dateOnly(columnIndex)
+            | false, _ -> failToRead column "DateOnly"
+
+        member __.dateOnlyOrNone(column: string): DateOnly option =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> if reader.IsDBNull(columnIndex) then None else Some(__.dateOnly(columnIndex))
+            | false, _ -> failToRead column "DateOnly"
+
+        /// Reads the column as TimeOnly (stored as ticks in int64)
+        member __.timeOnly(columnIndex: int): TimeOnly = TimeOnly(reader.GetInt64(columnIndex))
+
+        /// Reads the column as TimeOnly (stored as ticks in int64)
+        member __.timeOnly(column: string): TimeOnly =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> __.timeOnly(columnIndex)
+            | false, _ -> failToRead column "TimeOnly"
+
+        member __.timeOnlyOrNone(column: string): TimeOnly option =
+            match columnDict.TryGetValue(column) with
+            | true, columnIndex -> if reader.IsDBNull(columnIndex) then None else Some(__.timeOnly(columnIndex))
+            | false, _ -> failToRead column "TimeOnly"

@@ -9,6 +9,7 @@ type Page =
     | Install
     | Use
     | QueryTable
+    | NewFeatures
     // | HandleNullValues  //TODO: Implement this page
     // | ProvidingDefaultValues // TODO: Implement this page
     // | ParameterizedQuery // TODO: Implement this page
@@ -21,6 +22,7 @@ module Page =
         function
         | [ "use" ] -> Page.Use
         | [ "querytable" ] -> Page.QueryTable
+        | [ "newfeatures" ] -> Page.NewFeatures
         // | [ "handlenullvalues" ] -> Page.HandleNullValues
         // | [ "providingdefaultvalues" ] -> Page.ProvidingDefaultValues
         // | [ "parameterizedquery" ] -> Page.ParameterizedQuery
@@ -35,6 +37,7 @@ module Page =
         | Page.Install -> [] |> noQueryString
         | Page.Use -> [ "use" ] |> noQueryString
         | Page.QueryTable -> [ "querytable" ] |> noQueryString
+        | Page.NewFeatures -> [ "newfeatures" ] |> noQueryString
         // | Page.HandleNullValues -> [ "handlenullvalues" ] |> noQueryString
         // | Page.ProvidingDefaultValues -> [ "providingdefaultvalues" ] |> noQueryString
         // | Page.ParameterizedQuery -> [ "parameterizedquery" ] |> noQueryString

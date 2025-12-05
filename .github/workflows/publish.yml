@@ -16,10 +16,10 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ matrix.dotnet }}
 
@@ -31,29 +31,14 @@ jobs:
       env:
         nuget-key: ${{ secrets.NUGET_KEY }}
 
-    - name: Get Changelog Entry
-      id: changelog_reader
-      uses: mindsers/changelog-reader-action@v2
-      with:
-        version: ${{ github.ref }}
-        path: ./CHANGELOG.md
-
     - name: Create Release
-      uses: actions/create-release@latest
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        body: ${{ steps.changelog_reader.outputs.log_entry }}
+        name: ${{ github.ref_name }}
+        body_path: ./RELEASE_NOTES.md
         draft: false
         prerelease: false
-
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v1-release
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: build/*.nupkg
-        tag: ${{ github.ref }}
-        overwrite: true
-        file_glob: true
+        files: build/*.nupkg

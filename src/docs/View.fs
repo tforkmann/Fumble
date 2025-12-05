@@ -88,6 +88,7 @@ let private leftSide (p: Page) =
                         mi "Install" Page.Install
                         mi "Use" Page.Use
                         mi "QueryTable" Page.QueryTable
+                        mi "New in v2.0" Page.NewFeatures
                         // mi "Handle Null Values" Page.HandleNullValues
                         // mi "Parameterized Query" Page.ParameterizedQuery
                         mi "Insert Data" Page.InsertData
@@ -121,6 +122,7 @@ let AppView (state: State) (dispatch: Msg -> unit) =
         | Page.Install -> "Installation", "/docs/install", Pages.Install.InstallView()
         | Page.Use -> "How to use", "/docs/use", Pages.Use.UseView()
         | Page.QueryTable -> "QueryTable", "/docs/use", Pages.QueryTable.QueryTableView()
+        | Page.NewFeatures -> "New in v2.0", "/docs/newfeatures", Pages.NewFeatures.NewFeaturesView()
         // | Page.HandleNullValues -> "Handle Null Values", "/docs/use", Pages.HandleNullValues.HandleNullValuesView()
         // | Page.ProvidingDefaultValues  -> "Providing Default Values", "/docs/use", Pages.ProvidingDefaultValues.ProvidingDefaultValuesView()
         // | Page.ParameterizedQuery -> "Parameterized Query", "/docs/use", Pages.ParameterizedQuery.ParameterizedQueryView()
